@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mis tareas">
+<title>Mis tareas</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, Arial, sans-serif; background: #f2f4f8; margin: 0; padding: 16px; color: #1c1c1e; }
+  h1 { margin: 0 0 4px; font-size: 24px; }
+  #fecha { color: #6b7280; margin-bottom: 16px; text-transform: capitalize; }
+  .tarjeta { background: white; border-radius: 14px; padding: 14px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .barra { background: #e5e7eb; border-radius: 10px; height: 16px; overflow: hidden; }
+  #relleno { background: #34c759; height: 100%; width: 0%; transition: width .3s; }
+  #textoProgreso { margin-top: 6px; font-size: 14px; color: #374151; }
+  .tarea { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
+  .tarea:last-child { border-bottom: none; }
+  .tarea input[type=checkbox] { width: 22px; height: 22px; }
+  .tarea.hecha .nombre { text-decoration: line-through; color: #9ca3af; }
+  .nombre { flex: 1; }
+  .hora { font-size: 13px; color: #007aff; }
+  .borrar { background: none; border: none; color: #ff3b30; font-size: 18px; }
+  input[type=text], input[type=time] { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 16px; margin-bottom: 8px; }
+  .dias { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .dias label { background: #eef0f4; padding: 8px 10px; border-radius: 10px; font-size: 14px; }
+  .dias input { margin-right: 4px; }
+  button.principal { width: 100%; padding: 12px; background: #007aff; color: white; border: none; border-radius: 10px; font-size: 16px; }
+  #vacio { color: #6b7280; text-align: center; padding: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Mis tareas de hoy</h1>
+<div id="fecha"></div>
+
+<div class="tarjeta">
+  <div class="barra"><div id="relleno"></div></div>
+  <div id="textoProgreso"></div>
+</div>
+
+<div class="tarjeta" id="lista"></div>
+
+<div class="tarjeta">
+  <h3 style="margin-top:0">Añadir tarea</h3>
+  <input type="text" id="nuevoNombre" placeholder="¿Qué tienes que hacer?">
+  <input type="time" id="nuevaHora">
+  <div class="dias" id="selectorDias"></div>
+  <button class="principal" onclick="agregar()">Añadir</button>
+</div>
+
+<script>
+const NOMBRES_DIAS = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+let tareas = JSON.parse(localStorage.getItem('tareas') || '[]');
+let hechas = JSON.parse(localStorage.getItem('hechas') || '{}');
+
+function claveHoy() {
+  const d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+}
+
+function guardar() {
+  localStorage.setItem('tareas', JSON.stringify(tareas));
+  localStorage.setItem('hechas', JSON.stringify(hechas));
+}
+
+function dibujarSelector() {
+  const cont = document.getElementById('selectorDias');
+  cont.innerHTML = '';
+  // Orden: lunes a domingo
+  [1,2,3,4,5,6,0].forEach(n => {
+    cont.innerHTML += '<label><input type="checkbox" value="' + n + '">' + NOMBRES_DIAS[n] + '</label>';
+  });
+}
+
+function agregar() {
+  const nombre = document.getElementById('nuevoNombre').value.trim();
+  const hora = document.getElementById('nuevaHora').value;
+  const dias = [...document.querySelectorAll('#selectorDias input:checked')].map(c => Number(c.value));
+  if (!nombre) { alert('Escribe el nombre de la tarea.'); return; }
+  if (dias.length === 0) { alert('Elige al menos un día.'); return; }
+  tareas.push({ id: Date.now(), nombre, hora, dias });
+  guardar();
+  document.getElementById('nuevoNombre').value = '';
+  document.getElementById('nuevaHora').value = '';
+  document.querySelectorAll('#selectorDias input').forEach(c => c.checked = false);
+  dibujar();
+}
+
+function marcar(id) {
+  const k = claveHoy();
+  hechas[k] = hechas[k] || [];
+  const i = hechas[k].indexOf(id);
+  if (i >= 0) hechas[k].splice(i, 1); else hechas[k].push(id);
+  guardar();
+  dibujar();
+}
+
+function borrar(id) {
+  if (!confirm('¿Borrar esta tarea de todos los días?')) return;
+  tareas = tareas.filter(t => t.id !== id);
+  guardar();
+  dibujar();
+}
+
+function dibujar() {
+  const hoy = new Date().getDay();
+  const k = claveHoy();
+  const hechasHoy = hechas[k] || [];
+  const deHoy = tareas
+    .filter(t => t.dias.includes(hoy))
+    .sort((a, b) => (a.hora || '99:99').localeCompare(b.hora || '99:99'));
+
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '';
+  if (deHoy.length === 0) {
+    lista.innerHTML = '<div id="vacio">No tienes tareas para hoy. Añade una abajo.</div>';
+  }
+  deHoy.forEach(t => {
+    const hecha = hechasHoy.includes(t.id);
+    lista.innerHTML +=
+      '<div class="tarea ' + (hecha ? 'hecha' : '') + '">' +
+      '<input type="checkbox" ' + (hecha ? 'checked' : '') + ' onchange="marcar(' + t.id + ')">' +
+      '<span class="nombre">' + t.nombre + '</span>' +
+      (t.hora ? '<span class="hora">' + t.hora + '</span>' : '') +
+      '<button class="borrar" onclick="borrar(' + t.id + ')">✕</button>' +
+      '</div>';
+  });
+
+  const total = deHoy.length;
+  const hechasContadas = deHoy.filter(t => hechasHoy.includes(t.id)).length;
+  const pct = total ? Math.round(hechasContadas * 100 / total) : 0;
+  document.getElementById('relleno').style.width = pct + '%';
+  document.getElementById('textoProgreso').textContent =
+    hechasContadas + ' de ' + total + ' completadas (' + pct + '%)';
+
+  document.getElementById('fecha').textContent =
+    new Date().toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+// Recordatorios: mientras la página esté abierta, avisa a la hora de cada tarea
+let avisadas = {};
+function revisarRecordatorios() {
+  const ahora = new Date();
+  const hhmm = String(ahora.getHours()).padStart(2,'0') + ':' + String(ahora.getMinutes()).padStart(2,'0');
+  const k = claveHoy();
+  const hechasHoy = hechas[k] || [];
+  tareas.forEach(t => {
+    if (t.dias.includes(ahora.getDay()) && t.hora === hhmm && !hechasHoy.includes(t.id) && !avisadas[k + t.id]) {
+      avisadas[k + t.id] = true;
+      alert('Recordatorio: ' + t.nombre);
+    }
+  });
+}
+
+dibujarSelector();
+dibujar();
+setInterval(revisarRecordatorios, 20000);
+setInterval(dibujar, 60000);
+</script>
+</body>
+</html>
