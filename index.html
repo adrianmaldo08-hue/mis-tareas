@@ -83,7 +83,7 @@ summary{font-weight:600}
 <button class='principal' id='btnCron' onclick='alternarCron()'>Ver horario semanal</button>
 <div id='cron'>
 <div id='cronCaja'><table id='cronTabla'></table></div>
-<div id='cronNota'>Desliza el horario hacia abajo y a los lados. Toca una tarea de hoy para marcarla.</div>
+<div id='cronNota'>Horario de 08:00 a medianoche. Desliza hacia abajo y a los lados. Toca una tarea de hoy para marcarla.</div>
 </div>
 </div>
 <div class='card'>
@@ -109,6 +109,7 @@ summary{font-weight:600}
 <script>
 var DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 var ORDEN=[1,2,3,4,5,6,0];
+var HORA_INICIO=8,HORA_FIN=23;
 var FRASES=[
 'Un paso pequeño hoy vale más que un plan perfecto mañana.',
 'No tienes que hacerlo todo, solo lo siguiente.',
@@ -143,6 +144,7 @@ function dibujarTabs(){var c=document.getElementById('tabs'),hoy=new Date().getD
 function marcar(id){var k=clave();hechas[k]=hechas[k]||[];var i=hechas[k].indexOf(id);if(i>=0)hechas[k].splice(i,1);else hechas[k].push(id);guardar();dibujar()}
 function borrar(id){if(!confirm('¿Borrar esta tarea de todos los días?'))return;tareas=tareas.filter(function(t){return t.id!==id});guardar();dibujar()}
 function alternarCron(){cronAbierto=!cronAbierto;document.getElementById('cron').style.display=cronAbierto?'block':'none';document.getElementById('btnCron').textContent=cronAbierto?'Ocultar horario semanal':'Ver horario semanal';if(cronAbierto){dibujarCron();var f=document.querySelector('#cronTabla tr.ahora');var caja=document.getElementById('cronCaja');if(f)caja.scrollTop=Math.max(0,f.offsetTop-70)}}
+function horaNum(x){return parseInt(x.hora.slice(0,2),10)}
 function dibujarCron(){
 var t=document.getElementById('cronTabla');t.textContent='';
 var ahora=new Date(),hoy=ahora.getDay(),hh=hechas[clave()]||[];
@@ -151,15 +153,14 @@ r0.appendChild(el('th','hr',''));
 ORDEN.forEach(function(n){r0.appendChild(el('th',n===hoy?'hoyCol':'',DIAS[n]))});
 thead.appendChild(r0);t.appendChild(thead);
 var tb=document.createElement('tbody');
-function celda(fila,n,lista){var td=document.createElement('td');if(n===hoy)td.className='hoyCol';lista.forEach(function(x){var c=el('span','chip'+(n===hoy&&hh.indexOf(x.id)>=0?' hecha':''),(x.hora&&x.hora.slice(3)!=='00'?x.hora.slice(3)+"' ":'')+x.nombre);if(n===hoy)c.onclick=function(){marcar(x.id)};td.appendChild(c)});fila.appendChild(td)}
+function celda(fila,n,lista){var td=document.createElement('td');if(n===hoy)td.className='hoyCol';lista.forEach(function(x){var pref='';if(x.hora&&(horaNum(x)<HORA_INICIO||horaNum(x)>HORA_FIN))pref=x.hora+' ';else if(x.hora&&x.hora.slice(3)!=='00')pref=x.hora.slice(3)+"' ";var c=el('span','chip'+(n===hoy&&hh.indexOf(x.id)>=0?' hecha':''),pref+x.nombre);if(n===hoy)c.onclick=function(){marcar(x.id)};td.appendChild(c)});fila.appendChild(td)}
 var rs=document.createElement('tr');rs.className='sinhora';rs.appendChild(el('td','hr','Sin hora'));
-ORDEN.forEach(function(n){celda(rs,n,tareas.filter(function(x){return !x.hora&&x.dias.indexOf(n)>=0}))});
+ORDEN.forEach(function(n){celda(rs,n,tareas.filter(function(x){return x.dias.indexOf(n)>=0&&(!x.hora||horaNum(x)<HORA_INICIO||horaNum(x)>HORA_FIN)}))});
 tb.appendChild(rs);
-for(var h=0;h<24;h++){
+for(var h=HORA_INICIO;h<=HORA_FIN;h++){
 var tr=document.createElement('tr');if(h===ahora.getHours())tr.className='ahora';
 tr.appendChild(el('td','hr',String(h).padStart(2,'0')+':00'));
-var hs=String(h).padStart(2,'0');
-ORDEN.forEach(function(n){celda(tr,n,tareas.filter(function(x){return x.hora&&x.hora.slice(0,2)===hs&&x.dias.indexOf(n)>=0}).sort(function(a,b){return a.hora.localeCompare(b.hora)}))});
+ORDEN.forEach(function(n){celda(tr,n,tareas.filter(function(x){return x.hora&&horaNum(x)===h&&x.dias.indexOf(n)>=0}).sort(function(a,b){return a.hora.localeCompare(b.hora)}))});
 tb.appendChild(tr)}
 t.appendChild(tb)}
 function dibujar(){
