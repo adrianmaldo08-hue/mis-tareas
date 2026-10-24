@@ -47,6 +47,21 @@ input[type=text],input[type=time]{width:100%;padding:11px;border:1px solid var(-
 .sec{width:100%;padding:10px;margin-top:8px;background:var(--fondo);color:var(--texto);border:1px solid var(--linea);border-radius:10px;font-size:15px}
 summary{font-weight:600}
 #aviso{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);background:var(--rojo2);color:#fff;padding:14px;border-radius:14px;display:none;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+#cron{display:none;margin-top:12px}
+#cronCaja{max-height:340px;overflow:auto;border:1px solid var(--linea);border-radius:12px;background:var(--fondo)}
+#cronTabla{border-collapse:collapse;width:100%;min-width:430px;table-layout:fixed;font-size:10px}
+#cronTabla th,#cronTabla td{border:1px solid var(--linea);padding:2px;vertical-align:top;overflow:hidden}
+#cronTabla thead th{position:sticky;top:0;background:var(--card);z-index:2;font-size:11px;padding:5px 2px}
+#cronTabla th.hoyCol{background:var(--rojo);color:#fff}
+#cronTabla .hr{width:38px;position:sticky;left:0;background:var(--card);color:var(--gris);text-align:right;padding-right:4px;z-index:1}
+#cronTabla thead th.hr{z-index:3}
+#cronTabla tr.ahora .hr{color:var(--rojo);font-weight:700}
+#cronTabla td{height:28px}
+#cronTabla td.hoyCol{background:var(--suave)}
+.chip{display:block;background:var(--rojo);color:#fff;border-radius:5px;padding:2px 3px;margin-bottom:2px;font-size:10px;line-height:1.2;word-break:break-word}
+.chip.hecha{background:var(--ok);text-decoration:line-through;opacity:.85}
+#cronTabla tr.sinhora td{background:var(--card);height:auto;min-height:28px}
+#cronNota{font-size:12px;color:var(--gris);margin:6px 2px 0}
 </style>
 </head>
 <body>
@@ -64,6 +79,13 @@ summary{font-weight:600}
 </div>
 <div id='tabs'></div>
 <div class='card' id='lista'></div>
+<div class='card'>
+<button class='principal' id='btnCron' onclick='alternarCron()'>Ver horario semanal</button>
+<div id='cron'>
+<div id='cronCaja'><table id='cronTabla'></table></div>
+<div id='cronNota'>Desliza el horario hacia abajo y a los lados. Toca una tarea de hoy para marcarla.</div>
+</div>
+</div>
 <div class='card'>
 <h3>Añadir tarea</h3>
 <input type='text' id='nuevoNombre' placeholder='¿Qué tienes que hacer?'>
@@ -86,6 +108,7 @@ summary{font-weight:600}
 </main>
 <script>
 var DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+var ORDEN=[1,2,3,4,5,6,0];
 var FRASES=[
 'Un paso pequeño hoy vale más que un plan perfecto mañana.',
 'No tienes que hacerlo todo, solo lo siguiente.',
@@ -108,7 +131,7 @@ var FRASES=[
 'Terminar una cosa pequeña ya cambia el ánimo del día.',
 'Tus metas importan, y hoy les das un paso más.'];
 function leer(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
-var tareas=leer('tareas',[]),hechas=leer('hechas',{}),resumen=leer('resumen',{}),vista=new Date().getDay(),avisadas={};
+var tareas=leer('tareas',[]),hechas=leer('hechas',{}),resumen=leer('resumen',{}),vista=new Date().getDay(),avisadas={},cronAbierto=false;
 function guardar(){try{localStorage.setItem('tareas',JSON.stringify(tareas));localStorage.setItem('hechas',JSON.stringify(hechas));localStorage.setItem('resumen',JSON.stringify(resumen))}catch(e){}}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
 function clave(d){d=d||new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
@@ -116,9 +139,29 @@ function hhmm(d){return String(d.getHours()).padStart(2,'0')+':'+String(d.getMin
 function tareasDe(n){return tareas.filter(function(t){return t.dias.indexOf(n)>=0}).sort(function(a,b){return (a.hora||'99:99').localeCompare(b.hora||'99:99')})}
 function elegirFrase(){var u=leer('ultimaFrase',-1),i;do{i=Math.floor(Math.random()*FRASES.length)}while(i===u&&FRASES.length>1);try{localStorage.setItem('ultimaFrase',JSON.stringify(i))}catch(e){}return FRASES[i]}
 function racha(){var n=0,r=resumen[clave()];if(r&&r.t>0&&r.h===r.t)n++;for(var i=1;i<400;i++){var d=new Date();d.setDate(d.getDate()-i);var x=resumen[clave(d)];if(!x)break;if(x.t===0)continue;if(x.h===x.t)n++;else break}return n}
-function dibujarTabs(){var c=document.getElementById('tabs'),hoy=new Date().getDay();c.textContent='';[1,2,3,4,5,6,0].forEach(function(n){var b=el('button','tab'+(n===vista?' sel':'')+(n===hoy?' hoy':''),DIAS[n]);b.onclick=function(){vista=n;dibujar()};c.appendChild(b)})}
+function dibujarTabs(){var c=document.getElementById('tabs'),hoy=new Date().getDay();c.textContent='';ORDEN.forEach(function(n){var b=el('button','tab'+(n===vista?' sel':'')+(n===hoy?' hoy':''),DIAS[n]);b.onclick=function(){vista=n;dibujar()};c.appendChild(b)})}
 function marcar(id){var k=clave();hechas[k]=hechas[k]||[];var i=hechas[k].indexOf(id);if(i>=0)hechas[k].splice(i,1);else hechas[k].push(id);guardar();dibujar()}
 function borrar(id){if(!confirm('¿Borrar esta tarea de todos los días?'))return;tareas=tareas.filter(function(t){return t.id!==id});guardar();dibujar()}
+function alternarCron(){cronAbierto=!cronAbierto;document.getElementById('cron').style.display=cronAbierto?'block':'none';document.getElementById('btnCron').textContent=cronAbierto?'Ocultar horario semanal':'Ver horario semanal';if(cronAbierto){dibujarCron();var f=document.querySelector('#cronTabla tr.ahora');var caja=document.getElementById('cronCaja');if(f)caja.scrollTop=Math.max(0,f.offsetTop-70)}}
+function dibujarCron(){
+var t=document.getElementById('cronTabla');t.textContent='';
+var ahora=new Date(),hoy=ahora.getDay(),hh=hechas[clave()]||[];
+var thead=document.createElement('thead'),r0=document.createElement('tr');
+r0.appendChild(el('th','hr',''));
+ORDEN.forEach(function(n){r0.appendChild(el('th',n===hoy?'hoyCol':'',DIAS[n]))});
+thead.appendChild(r0);t.appendChild(thead);
+var tb=document.createElement('tbody');
+function celda(fila,n,lista){var td=document.createElement('td');if(n===hoy)td.className='hoyCol';lista.forEach(function(x){var c=el('span','chip'+(n===hoy&&hh.indexOf(x.id)>=0?' hecha':''),(x.hora&&x.hora.slice(3)!=='00'?x.hora.slice(3)+"' ":'')+x.nombre);if(n===hoy)c.onclick=function(){marcar(x.id)};td.appendChild(c)});fila.appendChild(td)}
+var rs=document.createElement('tr');rs.className='sinhora';rs.appendChild(el('td','hr','Sin hora'));
+ORDEN.forEach(function(n){celda(rs,n,tareas.filter(function(x){return !x.hora&&x.dias.indexOf(n)>=0}))});
+tb.appendChild(rs);
+for(var h=0;h<24;h++){
+var tr=document.createElement('tr');if(h===ahora.getHours())tr.className='ahora';
+tr.appendChild(el('td','hr',String(h).padStart(2,'0')+':00'));
+var hs=String(h).padStart(2,'0');
+ORDEN.forEach(function(n){celda(tr,n,tareas.filter(function(x){return x.hora&&x.hora.slice(0,2)===hs&&x.dias.indexOf(n)>=0}).sort(function(a,b){return a.hora.localeCompare(b.hora)}))});
+tb.appendChild(tr)}
+t.appendChild(tb)}
 function dibujar(){
 var ahora=new Date(),hoy=ahora.getDay(),esHoy=vista===hoy,k=clave(),hh=hechas[k]||[],h=ahora.getHours();
 document.getElementById('saludo').textContent=h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
@@ -141,11 +184,12 @@ var rel=document.getElementById('relleno');rel.style.width=pct+'%';rel.className
 document.getElementById('msg').textContent=!total?'Hoy no tienes tareas programadas.':pct===100?'¡Día completo! Muy buen trabajo.':n+' de '+total+' completadas ('+pct+'%). Te faltan '+(total-n)+'.';
 resumen[clave()]={t:total,h:n};guardar();
 var r=racha();document.getElementById('racha').textContent=r>0?'Racha: '+r+(r===1?' día':' días'):'Sin racha aún';
+if(cronAbierto)dibujarCron();
 }
 function aviso(t){var a=document.getElementById('aviso');a.textContent=t;a.style.display='block';clearTimeout(aviso.t);aviso.t=setTimeout(function(){a.style.display='none'},20000)}
 document.getElementById('aviso').onclick=function(){this.style.display='none'};
 function revisar(){var n=new Date(),k=clave(),hh=hechas[k]||[],h=hhmm(n);tareas.forEach(function(t){if(t.hora===h&&t.dias.indexOf(n.getDay())>=0&&hh.indexOf(t.id)<0&&!avisadas[k+t.id]){avisadas[k+t.id]=true;aviso('Recordatorio: '+t.nombre+' ('+t.hora+')')}})}
-function armarSelector(){var c=document.getElementById('selectorDias');[1,2,3,4,5,6,0].forEach(function(n){var l=el('label');var i=document.createElement('input');i.type='checkbox';i.value=n;l.appendChild(i);l.appendChild(document.createTextNode(' '+DIAS[n]));c.appendChild(l)})}
+function armarSelector(){var c=document.getElementById('selectorDias');ORDEN.forEach(function(n){var l=el('label');var i=document.createElement('input');i.type='checkbox';i.value=n;l.appendChild(i);l.appendChild(document.createTextNode(' '+DIAS[n]));c.appendChild(l)})}
 function atajo(a){document.querySelectorAll('#selectorDias input').forEach(function(i){i.checked=a.indexOf(Number(i.value))>=0})}
 function agregar(){var nom=document.getElementById('nuevoNombre').value.trim(),hora=document.getElementById('nuevaHora').value,dias=[];document.querySelectorAll('#selectorDias input').forEach(function(i){if(i.checked)dias.push(Number(i.value))});if(!nom){alert('Escribe el nombre de la tarea.');return}if(!dias.length){alert('Elige al menos un día.');return}tareas.push({id:Date.now(),nombre:nom,hora:hora,dias:dias});guardar();document.getElementById('nuevoNombre').value='';document.getElementById('nuevaHora').value='';atajo([]);dibujar()}
 function exportar(){var txt=JSON.stringify({tareas:tareas,hechas:hechas});if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){aviso('Copia lista. Pégala en tus notas para guardarla.')},function(){prompt('Copia este texto:',txt)})}else{prompt('Copia este texto:',txt)}}
