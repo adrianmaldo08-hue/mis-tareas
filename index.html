@@ -1,204 +1,228 @@
 <!DOCTYPE html>
-<html lang='es'>
+<html lang="es">
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>
-<meta name='apple-mobile-web-app-capable' content='yes'>
-<meta name='apple-mobile-web-app-title' content='Mis tareas'>
-<meta name='theme-color' content='#b4232c'>
-<title>Mis tareas</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#c0392b">
+<title>Mis Tareas</title>
 <style>
-:root{--rojo:#b4232c;--rojo2:#8f1a22;--suave:#fbeaea;--fondo:#f6f4f4;--card:#fff;--texto:#1f1b1b;--gris:#6f6666;--linea:#eee6e6;--ok:#2e7d4f}
-@media (prefers-color-scheme:dark){:root{--rojo:#d9434c;--rojo2:#a52c34;--suave:#3a2224;--fondo:#161213;--card:#221c1d;--texto:#f3eded;--gris:#a79c9d;--linea:#352d2e;--ok:#4cae74}}
+:root{--rojo:#c0392b;--rojo-claro:#fdecea;--texto:#2b2b2b;--gris:#8a8a8a;--fondo:#faf7f6;--tarjeta:#ffffff;--borde:#eee}
+.oscuro{--texto:#f0f0f0;--gris:#a0a0a0;--fondo:#1c1b1b;--tarjeta:#2a2828;--borde:#3a3737;--rojo-claro:#3a2523}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 40px);font-family:-apple-system,Helvetica,Arial,sans-serif;background:var(--fondo);color:var(--texto)}
-header{background:linear-gradient(135deg,var(--rojo),var(--rojo2));color:#fff;padding:calc(env(safe-area-inset-top,0px) + 18px) 18px 22px;border-radius:0 0 22px 22px}
-h1{margin:0;font-size:24px}
-#fecha{opacity:.85;margin:2px 0 14px;text-transform:capitalize;font-size:14px}
-#frase{background:rgba(255,255,255,.15);border-radius:14px;padding:12px 14px;font-style:italic;line-height:1.4;font-size:15px}
-main{padding:14px 14px 0}
-.card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.fila{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px}
-.barra{background:var(--linea);border-radius:10px;height:14px;overflow:hidden}
-#relleno{height:100%;width:0;background:var(--rojo);border-radius:10px;transition:width .4s}
-#relleno.completo{background:var(--ok)}
-#racha{background:var(--suave);color:var(--rojo);padding:4px 10px;border-radius:12px;font-weight:600;font-size:13px}
-#msg{margin-top:8px;font-size:14px;color:var(--gris)}
-#tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto}
-.tab{flex:1;min-width:44px;padding:9px 0;border:none;border-radius:12px;background:var(--card);color:var(--texto);font-size:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.tab.sel{background:var(--rojo);color:#fff;font-weight:600}
-.tab.hoy:not(.sel){color:var(--rojo);font-weight:600}
-.tarea{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--linea)}
-.tarea:last-child{border-bottom:none}
-.tarea input{width:22px;height:22px;accent-color:var(--rojo)}
-.nombre{flex:1;line-height:1.3}
-.tarea.hecha .nombre{text-decoration:line-through;color:var(--gris)}
-.hora{font-size:13px;color:var(--gris)}
-.hora.tarde{color:var(--rojo);font-weight:600}
-.borrar{background:none;border:none;color:var(--gris);font-size:16px;padding:4px 8px}
-.vacio{color:var(--gris);text-align:center;padding:12px}
-h3{margin:0 0 10px;font-size:17px}
-input[type=text],input[type=time]{width:100%;padding:11px;border:1px solid var(--linea);border-radius:10px;font-size:16px;margin-bottom:8px;background:var(--fondo);color:var(--texto)}
-.dias{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.dias label{background:var(--fondo);padding:8px 10px;border-radius:10px;font-size:14px}
-.atajos{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.atajo{background:none;border:1px solid var(--rojo);color:var(--rojo);border-radius:10px;padding:6px 10px;font-size:13px}
-.principal{width:100%;padding:13px;background:var(--rojo);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600}
-.sec{width:100%;padding:10px;margin-top:8px;background:var(--fondo);color:var(--texto);border:1px solid var(--linea);border-radius:10px;font-size:15px}
-summary{font-weight:600}
-#aviso{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);background:var(--rojo2);color:#fff;padding:14px;border-radius:14px;display:none;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,.3)}
-#cron{display:none;margin-top:12px}
-#cronCaja{max-height:340px;overflow:auto;border:1px solid var(--linea);border-radius:12px;background:var(--fondo)}
-#cronTabla{border-collapse:collapse;width:100%;min-width:430px;table-layout:fixed;font-size:10px}
-#cronTabla th,#cronTabla td{border:1px solid var(--linea);padding:2px;vertical-align:top;overflow:hidden}
-#cronTabla thead th{position:sticky;top:0;background:var(--card);z-index:2;font-size:11px;padding:5px 2px}
-#cronTabla th.hoyCol{background:var(--rojo);color:#fff}
-#cronTabla .hr{width:38px;position:sticky;left:0;background:var(--card);color:var(--gris);text-align:right;padding-right:4px;z-index:1}
-#cronTabla thead th.hr{z-index:3}
-#cronTabla tr.ahora .hr{color:var(--rojo);font-weight:700}
-#cronTabla td{height:28px}
-#cronTabla td.hoyCol{background:var(--suave)}
-.chip{display:block;background:var(--rojo);color:#fff;border-radius:5px;padding:2px 3px;margin-bottom:2px;font-size:10px;line-height:1.2;word-break:break-word}
-.chip.hecha{background:var(--ok);text-decoration:line-through;opacity:.85}
-#cronTabla tr.sinhora td{background:var(--card);height:auto;min-height:28px}
-#cronNota{font-size:12px;color:var(--gris);margin:6px 2px 0}
+body{margin:0;font-family:-apple-system,Helvetica,Arial,sans-serif;background:var(--fondo);color:var(--texto);padding-bottom:80px}
+header{background:var(--rojo);color:#fff;padding:18px 16px 14px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:20px;display:flex;justify-content:space-between;align-items:center}
+#frase{font-size:13px;opacity:.92;margin-top:6px;font-style:italic}
+.barra{height:8px;background:rgba(255,255,255,.3);border-radius:8px;margin-top:10px;overflow:hidden}
+.barra div{height:100%;width:0;background:#fff;transition:width .4s}
+#pct{font-size:12px;margin-top:4px}
+nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--tarjeta);border-top:1px solid var(--borde);z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:none;padding:12px 4px;font-size:12px;color:var(--gris)}
+nav button.act{color:var(--rojo);font-weight:700}
+section{display:none;padding:14px}
+section.act{display:block}
+.dias{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}
+.dias button{flex:0 0 auto;border:1px solid var(--borde);background:var(--tarjeta);color:var(--texto);border-radius:20px;padding:8px 14px;font-size:14px}
+.dias button.act{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:14px;padding:12px;margin:10px 0}
+.tarea{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--borde)}
+.tarea:last-child{border-bottom:0}
+.tarea input[type=checkbox]{width:22px;height:22px;accent-color:var(--rojo);margin-top:2px}
+.tarea .t{flex:1}
+.tarea .t b{display:block;font-weight:600}
+.tarea .t small{color:var(--gris)}
+.tarea.hecha .t b{text-decoration:line-through;color:var(--gris)}
+.p1{border-left:4px solid #e74c3c;padding-left:8px}
+.p2{border-left:4px solid #f39c12;padding-left:8px}
+.p3{border-left:4px solid #3498db;padding-left:8px}
+.x{border:0;background:none;color:var(--gris);font-size:18px}
+input[type=text],input[type=time],select{width:100%;padding:11px;border:1px solid var(--borde);border-radius:10px;font-size:16px;background:var(--tarjeta);color:var(--texto);margin:4px 0}
+.fila{display:flex;gap:8px}
+.btn{background:var(--rojo);color:#fff;border:0;border-radius:10px;padding:12px 16px;font-size:15px;width:100%;margin-top:6px}
+.btn.sec{background:var(--rojo-claro);color:var(--rojo)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.chips label{border:1px solid var(--borde);border-radius:16px;padding:6px 10px;font-size:13px}
+.chips input{display:none}
+.chips input:checked+span{color:var(--rojo);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:10px;table-layout:fixed}
+th,td{border:1px solid var(--borde);padding:2px;height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+th{background:var(--rojo-claro);color:var(--rojo)}
+td.h{width:30px;text-align:center;color:var(--gris)}
+td.ocu{background:var(--rojo);color:#fff}
+.temp{font-size:56px;text-align:center;font-weight:700;margin:20px 0;color:var(--rojo)}
+.racha{color:var(--rojo);font-weight:700;font-size:13px}
+.vacio{text-align:center;color:var(--gris);padding:24px}
 </style>
 </head>
 <body>
-<div id='aviso'></div>
 <header>
-<h1 id='saludo'></h1>
-<div id='fecha'></div>
-<div id='frase'></div>
+<h1><span>Mis Tareas</span><button class="x" style="color:#fff" onclick="tema()">☾</button></h1>
+<div id="frase"></div>
+<div class="barra"><div id="prog"></div></div>
+<div id="pct"></div>
 </header>
-<main>
-<div class='card'>
-<div class='fila'><strong>Progreso de hoy</strong><span id='racha'></span></div>
-<div class='barra'><div id='relleno'></div></div>
-<div id='msg'></div>
+
+<section id="s-hoy" class="act">
+<div class="dias" id="dias"></div>
+<div class="tarjeta">
+<input type="text" id="rapida" placeholder="Añadir rápido: Estudiar 18:00" onkeydown="if(event.key==='Enter')rapida()">
+<button class="btn" onclick="rapida()">Añadir</button>
 </div>
-<div id='tabs'></div>
-<div class='card' id='lista'></div>
-<div class='card'>
-<button class='principal' id='btnCron' onclick='alternarCron()'>Ver horario semanal</button>
-<div id='cron'>
-<div id='cronCaja'><table id='cronTabla'></table></div>
-<div id='cronNota'>Horario de 08:00 a medianoche. Desliza hacia abajo y a los lados. Toca una tarea de hoy para marcarla.</div>
+<div id="lista"></div>
+</section>
+
+<section id="s-nueva">
+<div class="tarjeta">
+<h3>Nueva tarea</h3>
+<input type="text" id="n-titulo" placeholder="¿Qué tienes que hacer?">
+<div class="fila">
+<input type="time" id="n-hora">
+<select id="n-dur"><option value="1">1 h</option><option value="2">2 h</option><option value="3">3 h</option><option value="0.5">30 min</option></select>
 </div>
+<select id="n-prio"><option value="1">Prioridad alta</option><option value="2" selected>Prioridad media</option><option value="3">Prioridad baja</option></select>
+<p style="margin:8px 0 2px;font-size:13px;color:var(--gris)">Se repite estos días:</p>
+<div class="chips" id="n-dias"></div>
+<input type="text" id="n-sub" placeholder="Subtareas separadas por coma (opcional)">
+<button class="btn" onclick="crear()">Guardar tarea</button>
 </div>
-<div class='card'>
-<h3>Añadir tarea</h3>
-<input type='text' id='nuevoNombre' placeholder='¿Qué tienes que hacer?'>
-<input type='time' id='nuevaHora'>
-<div class='dias' id='selectorDias'></div>
-<div class='atajos'>
-<button class='atajo' onclick='atajo([0,1,2,3,4,5,6])'>Todos</button>
-<button class='atajo' onclick='atajo([1,2,3,4,5])'>Lun a Vie</button>
-<button class='atajo' onclick='atajo([6,0])'>Fin de semana</button>
+</section>
+
+<section id="s-sem">
+<div class="tarjeta" style="padding:6px"><div id="horario"></div></div>
+</section>
+
+<section id="s-hab">
+<div class="tarjeta">
+<input type="text" id="h-nombre" placeholder="Nuevo hábito: Beber agua">
+<button class="btn" onclick="nuevoHabito()">Añadir hábito</button>
 </div>
-<button class='principal' onclick='agregar()'>Añadir</button>
+<div id="habitos"></div>
+</section>
+
+<section id="s-foco">
+<div class="tarjeta">
+<div class="temp" id="temp">25:00</div>
+<div class="fila">
+<button class="btn" onclick="foco(25)">Foco 25</button>
+<button class="btn sec" onclick="foco(5)">Descanso 5</button>
+<button class="btn sec" onclick="paraFoco()">Parar</button>
 </div>
-<div class='card'>
-<details>
-<summary>Copia de seguridad</summary>
-<button class='sec' onclick='exportar()'>Copiar mis datos</button>
-<button class='sec' onclick='importar()'>Restaurar desde copia</button>
-</details>
+<p style="text-align:center;color:var(--gris);font-size:13px">Sesiones de foco hoy: <b id="sesiones">0</b></p>
 </div>
-</main>
+<div class="tarjeta">
+<button class="btn sec" onclick="avisos()">Activar avisos de recordatorio</button>
+<p style="font-size:12px;color:var(--gris)">En iPhone los avisos solo funcionan con la página abierta. Para que funcionen mejor, añade la página a la pantalla de inicio.</p>
+<button class="btn sec" onclick="exportar()">Copiar mis datos (copia de seguridad)</button>
+<button class="btn sec" onclick="importar()">Pegar datos guardados</button>
+</div>
+</section>
+
+<nav>
+<button class="act" onclick="ir('hoy',this)">Hoy</button>
+<button onclick="ir('nueva',this)">Nueva</button>
+<button onclick="ir('sem',this)">Semana</button>
+<button onclick="ir('hab',this)">Hábitos</button>
+<button onclick="ir('foco',this)">Foco</button>
+</nav>
+
 <script>
-var DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-var ORDEN=[1,2,3,4,5,6,0];
-var HORA_INICIO=8,HORA_FIN=23;
-var FRASES=[
-'Un paso pequeño hoy vale más que un plan perfecto mañana.',
-'No tienes que hacerlo todo, solo lo siguiente.',
-'La constancia le gana al talento cuando el talento no es constante.',
-'Hoy es un buen día para avanzar un poquito.',
-'Lo que haces cada día pesa más que lo que haces de vez en cuando.',
-'Empieza donde estás, con lo que tienes.',
-'Cada tarea terminada es una promesa cumplida contigo.',
-'Tu yo del futuro te va a agradecer lo de hoy.',
-'El progreso lento sigue siendo progreso.',
-'Respira, ordena y avanza con calma.',
-'Disciplina es elegir lo que quieres lograr sobre lo que quieres ahora.',
-'No esperes a tener ganas: empieza y las ganas llegan.',
-'Un día a la vez, una tarea a la vez.',
-'Hazlo con atención y lo demás se acomoda.',
-'Hoy puedes ser mejor que ayer, aunque sea un poco.',
-'Los grandes resultados se construyen con días normales bien aprovechados.',
-'Lo difícil de hoy es lo fácil de mañana.',
-'Cree en el proceso, el avance se nota con el tiempo.',
-'Terminar una cosa pequeña ya cambia el ánimo del día.',
-'Tus metas importan, y hoy les das un paso más.'];
-function leer(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
-var tareas=leer('tareas',[]),hechas=leer('hechas',{}),resumen=leer('resumen',{}),vista=new Date().getDay(),avisadas={},cronAbierto=false;
-function guardar(){try{localStorage.setItem('tareas',JSON.stringify(tareas));localStorage.setItem('hechas',JSON.stringify(hechas));localStorage.setItem('resumen',JSON.stringify(resumen))}catch(e){}}
-function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
-function clave(d){d=d||new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
-function hhmm(d){return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
-function tareasDe(n){return tareas.filter(function(t){return t.dias.indexOf(n)>=0}).sort(function(a,b){return (a.hora||'99:99').localeCompare(b.hora||'99:99')})}
-function elegirFrase(){var u=leer('ultimaFrase',-1),i;do{i=Math.floor(Math.random()*FRASES.length)}while(i===u&&FRASES.length>1);try{localStorage.setItem('ultimaFrase',JSON.stringify(i))}catch(e){}return FRASES[i]}
-function racha(){var n=0,r=resumen[clave()];if(r&&r.t>0&&r.h===r.t)n++;for(var i=1;i<400;i++){var d=new Date();d.setDate(d.getDate()-i);var x=resumen[clave(d)];if(!x)break;if(x.t===0)continue;if(x.h===x.t)n++;else break}return n}
-function dibujarTabs(){var c=document.getElementById('tabs'),hoy=new Date().getDay();c.textContent='';ORDEN.forEach(function(n){var b=el('button','tab'+(n===vista?' sel':'')+(n===hoy?' hoy':''),DIAS[n]);b.onclick=function(){vista=n;dibujar()};c.appendChild(b)})}
-function marcar(id){var k=clave();hechas[k]=hechas[k]||[];var i=hechas[k].indexOf(id);if(i>=0)hechas[k].splice(i,1);else hechas[k].push(id);guardar();dibujar()}
-function borrar(id){if(!confirm('¿Borrar esta tarea de todos los días?'))return;tareas=tareas.filter(function(t){return t.id!==id});guardar();dibujar()}
-function alternarCron(){cronAbierto=!cronAbierto;document.getElementById('cron').style.display=cronAbierto?'block':'none';document.getElementById('btnCron').textContent=cronAbierto?'Ocultar horario semanal':'Ver horario semanal';if(cronAbierto){dibujarCron();var f=document.querySelector('#cronTabla tr.ahora');var caja=document.getElementById('cronCaja');if(f)caja.scrollTop=Math.max(0,f.offsetTop-70)}}
-function horaNum(x){return parseInt(x.hora.slice(0,2),10)}
-function dibujarCron(){
-var t=document.getElementById('cronTabla');t.textContent='';
-var ahora=new Date(),hoy=ahora.getDay(),hh=hechas[clave()]||[];
-var thead=document.createElement('thead'),r0=document.createElement('tr');
-r0.appendChild(el('th','hr',''));
-ORDEN.forEach(function(n){r0.appendChild(el('th',n===hoy?'hoyCol':'',DIAS[n]))});
-thead.appendChild(r0);t.appendChild(thead);
-var tb=document.createElement('tbody');
-function celda(fila,n,lista){var td=document.createElement('td');if(n===hoy)td.className='hoyCol';lista.forEach(function(x){var pref='';if(x.hora&&(horaNum(x)<HORA_INICIO||horaNum(x)>HORA_FIN))pref=x.hora+' ';else if(x.hora&&x.hora.slice(3)!=='00')pref=x.hora.slice(3)+"' ";var c=el('span','chip'+(n===hoy&&hh.indexOf(x.id)>=0?' hecha':''),pref+x.nombre);if(n===hoy)c.onclick=function(){marcar(x.id)};td.appendChild(c)});fila.appendChild(td)}
-var rs=document.createElement('tr');rs.className='sinhora';rs.appendChild(el('td','hr','Sin hora'));
-ORDEN.forEach(function(n){celda(rs,n,tareas.filter(function(x){return x.dias.indexOf(n)>=0&&(!x.hora||horaNum(x)<HORA_INICIO||horaNum(x)>HORA_FIN)}))});
-tb.appendChild(rs);
-for(var h=HORA_INICIO;h<=HORA_FIN;h++){
-var tr=document.createElement('tr');if(h===ahora.getHours())tr.className='ahora';
-tr.appendChild(el('td','hr',String(h).padStart(2,'0')+':00'));
-ORDEN.forEach(function(n){celda(tr,n,tareas.filter(function(x){return x.hora&&horaNum(x)===h&&x.dias.indexOf(n)>=0}).sort(function(a,b){return a.hora.localeCompare(b.hora)}))});
-tb.appendChild(tr)}
-t.appendChild(tb)}
-function dibujar(){
-var ahora=new Date(),hoy=ahora.getDay(),esHoy=vista===hoy,k=clave(),hh=hechas[k]||[],h=ahora.getHours();
-document.getElementById('saludo').textContent=h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
-document.getElementById('fecha').textContent=ahora.toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});
-dibujarTabs();
-var lista=document.getElementById('lista');lista.textContent='';
-var ts=tareasDe(vista);
-if(!ts.length)lista.appendChild(el('div','vacio','No hay tareas para este día. Añade una abajo.'));
-ts.forEach(function(t){
-var hecha=esHoy&&hh.indexOf(t.id)>=0;
-var fila=el('div','tarea'+(hecha?' hecha':''));
-if(esHoy){var cb=document.createElement('input');cb.type='checkbox';cb.checked=hecha;cb.onchange=function(){marcar(t.id)};fila.appendChild(cb)}
-fila.appendChild(el('span','nombre',t.nombre));
-if(t.hora)fila.appendChild(el('span','hora'+(esHoy&&!hecha&&t.hora<hhmm(ahora)?' tarde':''),t.hora));
-var b=el('button','borrar','✕');b.onclick=function(){borrar(t.id)};fila.appendChild(b);
-lista.appendChild(fila)});
-if(!esHoy&&ts.length)lista.appendChild(el('div','vacio','Vista previa: solo puedes marcar las tareas de hoy.'));
-var hoyTs=tareasDe(hoy),total=hoyTs.length,n=hoyTs.filter(function(t){return hh.indexOf(t.id)>=0}).length,pct=total?Math.round(n*100/total):0;
-var rel=document.getElementById('relleno');rel.style.width=pct+'%';rel.className=(total&&pct===100)?'completo':'';
-document.getElementById('msg').textContent=!total?'Hoy no tienes tareas programadas.':pct===100?'¡Día completo! Muy buen trabajo.':n+' de '+total+' completadas ('+pct+'%). Te faltan '+(total-n)+'.';
-resumen[clave()]={t:total,h:n};guardar();
-var r=racha();document.getElementById('racha').textContent=r>0?'Racha: '+r+(r===1?' día':' días'):'Sin racha aún';
-if(cronAbierto)dibujarCron();
+const DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const FRASES=['Un paso pequeño hoy vale más que un plan perfecto mañana.','Hazlo simple, hazlo hoy.','La constancia le gana al talento.','Cada tarea hecha es una victoria.','Empieza donde estás, con lo que tienes.','Tu yo del futuro te lo agradecerá.','No tienes que hacerlo todo, solo lo siguiente.','Despacio también es avanzar.'];
+let D=JSON.parse(localStorage.getItem('mt2')||'null')||{tareas:[],habitos:[],hechas:{},sesiones:{},oscuro:false};
+let dia=new Date().getDay();
+const guardar=()=>localStorage.setItem('mt2',JSON.stringify(D));
+const hoyStr=()=>new Date().toISOString().slice(0,10);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function ir(id,b){document.querySelectorAll('section').forEach(s=>s.classList.remove('act'));document.getElementById('s-'+id).classList.add('act');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('act'));b.classList.add('act');if(id==='sem')pintaSemana();}
+function tema(){D.oscuro=!D.oscuro;document.body.classList.toggle('oscuro',D.oscuro);guardar();}
+
+function pintaDias(){const c=document.getElementById('dias');c.innerHTML='';const orden=[1,2,3,4,5,6,0];orden.forEach(i=>{const b=document.createElement('button');b.textContent=DIAS[i]+(i===new Date().getDay()?' •':'');if(i===dia)b.classList.add('act');b.onclick=()=>{dia=i;pintaDias();pintaLista();};c.appendChild(b);});}
+
+function clave(t){return hoyStr()+'|'+t.id;}
+function pintaLista(){
+ const l=document.getElementById('lista');
+ const ts=D.tareas.filter(t=>t.dias.includes(dia)).sort((a,b)=>(a.hora||'99').localeCompare(b.hora||'99')||a.prio-b.prio);
+ if(!ts.length){l.innerHTML='<div class="vacio">Nada para este día. Añade una tarea arriba.</div>';}
+ else{l.innerHTML='<div class="tarjeta">'+ts.map(t=>{
+  const h=!!D.hechas[clave(t)];
+  const subs=(t.subs||[]).map((s,i)=>'<label style="display:block;font-size:13px;margin:4px 0 0 4px"><input type="checkbox" '+(D.hechas[clave(t)+'#'+i]?'checked':'')+' onchange="marcaSub(\''+t.id+'\','+i+',this.checked)"> '+esc(s)+'</label>').join('');
+  return '<div class="tarea p'+t.prio+(h?' hecha':'')+'"><input type="checkbox" '+(h?'checked':'')+' onchange="marca(\''+t.id+'\',this.checked)"><div class="t"><b>'+esc(t.titulo)+'</b><small>'+(t.hora?t.hora+' · ':'')+t.dias.map(d=>DIAS[d]).join(' ')+'</small>'+subs+'</div><button class="x" onclick="borra(\''+t.id+'\')">✕</button></div>';}).join('')+'</div>';}
+ pintaAvance();
 }
-function aviso(t){var a=document.getElementById('aviso');a.textContent=t;a.style.display='block';clearTimeout(aviso.t);aviso.t=setTimeout(function(){a.style.display='none'},20000)}
-document.getElementById('aviso').onclick=function(){this.style.display='none'};
-function revisar(){var n=new Date(),k=clave(),hh=hechas[k]||[],h=hhmm(n);tareas.forEach(function(t){if(t.hora===h&&t.dias.indexOf(n.getDay())>=0&&hh.indexOf(t.id)<0&&!avisadas[k+t.id]){avisadas[k+t.id]=true;aviso('Recordatorio: '+t.nombre+' ('+t.hora+')')}})}
-function armarSelector(){var c=document.getElementById('selectorDias');ORDEN.forEach(function(n){var l=el('label');var i=document.createElement('input');i.type='checkbox';i.value=n;l.appendChild(i);l.appendChild(document.createTextNode(' '+DIAS[n]));c.appendChild(l)})}
-function atajo(a){document.querySelectorAll('#selectorDias input').forEach(function(i){i.checked=a.indexOf(Number(i.value))>=0})}
-function agregar(){var nom=document.getElementById('nuevoNombre').value.trim(),hora=document.getElementById('nuevaHora').value,dias=[];document.querySelectorAll('#selectorDias input').forEach(function(i){if(i.checked)dias.push(Number(i.value))});if(!nom){alert('Escribe el nombre de la tarea.');return}if(!dias.length){alert('Elige al menos un día.');return}tareas.push({id:Date.now(),nombre:nom,hora:hora,dias:dias});guardar();document.getElementById('nuevoNombre').value='';document.getElementById('nuevaHora').value='';atajo([]);dibujar()}
-function exportar(){var txt=JSON.stringify({tareas:tareas,hechas:hechas});if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){aviso('Copia lista. Pégala en tus notas para guardarla.')},function(){prompt('Copia este texto:',txt)})}else{prompt('Copia este texto:',txt)}}
-function importar(){var txt=prompt('Pega aquí tu copia de seguridad:');if(!txt)return;try{var d=JSON.parse(txt);if(!Array.isArray(d.tareas))throw 0;if(!confirm('Esto reemplaza tus tareas actuales. ¿Continuar?'))return;tareas=d.tareas;hechas=d.hechas||{};guardar();dibujar();aviso('Datos restaurados.')}catch(e){alert('Ese texto no es una copia válida.')}}
-document.getElementById('frase').textContent=elegirFrase();
-armarSelector();dibujar();
-setInterval(revisar,15000);setInterval(dibujar,60000);
-document.addEventListener('visibilitychange',function(){if(!document.hidden){dibujar();revisar()}});
+function marca(id,v){const t=D.tareas.find(x=>x.id===id);if(v)D.hechas[clave(t)]=1;else delete D.hechas[clave(t)];guardar();pintaLista();}
+function marcaSub(id,i,v){const t=D.tareas.find(x=>x.id===id);const k=clave(t)+'#'+i;if(v)D.hechas[k]=1;else delete D.hechas[k];guardar();}
+function borra(id){if(confirm('¿Borrar esta tarea?')){D.tareas=D.tareas.filter(t=>t.id!==id);guardar();pintaLista();}}
+function pintaAvance(){
+ const hoy=new Date().getDay();const ts=D.tareas.filter(t=>t.dias.includes(hoy));
+ const hechas=ts.filter(t=>D.hechas[clave(t)]).length;
+ const p=ts.length?Math.round(hechas/ts.length*100):0;
+ document.getElementById('prog').style.width=p+'%';
+ document.getElementById('pct').textContent='Hoy: '+hechas+' de '+ts.length+' tareas ('+p+'%)';
+}
+function rapida(){
+ const i=document.getElementById('rapida');let txt=i.value.trim();if(!txt)return;
+ const m=txt.match(/(\d{1,2}):(\d{2})/);let hora='';
+ if(m){hora=m[1].padStart(2,'0')+':'+m[2];txt=txt.replace(m[0],'').trim();}
+ D.tareas.push({id:'t'+Date.now(),titulo:txt,hora,dur:1,prio:2,dias:[dia],subs:[]});
+ i.value='';guardar();pintaLista();
+}
+function crear(){
+ const titulo=document.getElementById('n-titulo').value.trim();if(!titulo){alert('Escribe un título');return;}
+ const dias=[...document.querySelectorAll('#n-dias input:checked')].map(x=>+x.value);
+ if(!dias.length){alert('Elige al menos un día');return;}
+ const subs=document.getElementById('n-sub').value.split(',').map(s=>s.trim()).filter(Boolean);
+ D.tareas.push({id:'t'+Date.now(),titulo,hora:document.getElementById('n-hora').value,dur:+document.getElementById('n-dur').value,prio:+document.getElementById('n-prio').value,dias,subs});
+ guardar();document.getElementById('n-titulo').value='';document.getElementById('n-sub').value='';
+ pintaLista();ir('hoy',document.querySelector('nav button'));
+}
+function pintaChips(){const c=document.getElementById('n-dias');[1,2,3,4,5,6,0].forEach(i=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+i+'"><span>'+DIAS[i]+'</span>';c.appendChild(l);});}
+
+function pintaSemana(){
+ const orden=[1,2,3,4,5,6,0];
+ let h='<table><tr><th class="h"></th>'+orden.map(i=>'<th>'+DIAS[i]+'</th>').join('')+'</tr>';
+ for(let hr=0;hr<24;hr++){
+  h+='<tr><td class="h">'+hr+'</td>';
+  orden.forEach(d=>{
+   const t=D.tareas.find(x=>x.dias.includes(d)&&x.hora&&(()=>{const ini=parseInt(x.hora);return hr>=ini&&hr<ini+Math.ceil(x.dur||1);})());
+   h+=t?'<td class="ocu">'+esc(t.titulo)+'</td>':'<td></td>';
+  });
+  h+='</tr>';
+ }
+ document.getElementById('horario').innerHTML=h+'</table>';
+}
+
+function pintaHabitos(){
+ const c=document.getElementById('habitos');
+ if(!D.habitos.length){c.innerHTML='<div class="vacio">Aún no tienes hábitos.</div>';return;}
+ c.innerHTML=D.habitos.map((h,i)=>{
+  const hoy=hoyStr();const ok=h.dias.includes(hoy);
+  let racha=0;const d=new Date();if(!ok)d.setDate(d.getDate()-1);
+  while(h.dias.includes(d.toISOString().slice(0,10))){racha++;d.setDate(d.getDate()-1);}
+  return '<div class="tarjeta tarea" style="align-items:center"><input type="checkbox" '+(ok?'checked':'')+' onchange="toggleHab('+i+')"><div class="t"><b>'+esc(h.nombre)+'</b><span class="racha">Racha: '+racha+' día'+(racha===1?'':'s')+'</span></div><button class="x" onclick="borraHab('+i+')">✕</button></div>';}).join('');
+}
+function nuevoHabito(){const i=document.getElementById('h-nombre');if(!i.value.trim())return;D.habitos.push({nombre:i.value.trim(),dias:[]});i.value='';guardar();pintaHabitos();}
+function toggleHab(i){const h=D.habitos[i],t=hoyStr();const k=h.dias.indexOf(t);if(k>-1)h.dias.splice(k,1);else h.dias.push(t);guardar();pintaHabitos();}
+function borraHab(i){if(confirm('¿Borrar hábito?')){D.habitos.splice(i,1);guardar();pintaHabitos();}}
+
+let reloj=null,seg=0;
+function pintaTemp(){document.getElementById('temp').textContent=String(Math.floor(seg/60)).padStart(2,'0')+':'+String(seg%60).padStart(2,'0');}
+function foco(m){paraFoco();seg=m*60;pintaTemp();reloj=setInterval(()=>{seg--;pintaTemp();if(seg<=0){paraFoco();if(m===25){D.sesiones[hoyStr()]=(D.sesiones[hoyStr()]||0)+1;guardar();pintaSes();}aviso('¡Tiempo terminado!');if(navigator.vibrate)navigator.vibrate(400);}},1000);}
+function paraFoco(){clearInterval(reloj);reloj=null;}
+function pintaSes(){document.getElementById('sesiones').textContent=D.sesiones[hoyStr()]||0;}
+
+function avisos(){if(!('Notification' in window)){alert('Tu navegador no permite avisos.');return;}Notification.requestPermission().then(p=>alert(p==='granted'?'Avisos activados':'Avisos no permitidos'));}
+function aviso(t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Mis Tareas',{body:t});}else{alert(t);}}
+let avisadas={};
+setInterval(()=>{const n=new Date();const hm=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+ D.tareas.filter(t=>t.hora===hm&&t.dias.includes(n.getDay())&&!D.hechas[clave(t)]).forEach(t=>{const k=clave(t)+hm;if(!avisadas[k]){avisadas[k]=1;aviso('Ahora: '+t.titulo);}});},20000);
+
+function exportar(){const s=JSON.stringify(D);navigator.clipboard.writeText(s).then(()=>alert('Datos copiados. Pégalos en Notas para guardarlos.'));}
+function importar(){const s=prompt('Pega aquí tus datos guardados:');if(!s)return;try{D=JSON.parse(s);guardar();location.reload();}catch(e){alert('Los datos no son válidos.');}}
+
+document.getElementById('frase').textContent=FRASES[Math.floor(Math.random()*FRASES.length)];
+if(D.oscuro)document.body.classList.add('oscuro');
+pintaDias();pintaChips();pintaLista();pintaHabitos();pintaSes();
 </script>
 </body>
 </html>
