@@ -3,244 +3,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#c0392b">
-<title>Mis Tareas</title>
+<title>Mis tareas</title>
 <style>
-:root{--rojo:#c0392b;--rojo-claro:#fdecea;--texto:#2b2b2b;--gris:#8a8a8a;--fondo:#faf7f6;--tarjeta:#ffffff;--borde:#eee;--sombra:0 4px 14px rgba(0,0,0,.07)}
-.oscuro{--texto:#f0f0f0;--gris:#a0a0a0;--fondo:#1c1b1b;--tarjeta:#2a2828;--borde:#3a3737;--rojo-claro:#3a2523;--sombra:0 4px 14px rgba(0,0,0,.35)}
+:root{--rojo:#d62839;--rojo-osc:#8e1a26;--fondo:#14090b;--card:#221114;--texto:#f6eaec;--gris:#b59aa0;--verde:#3ddc84;--oro:#ffc94d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:-apple-system,Helvetica,Arial,sans-serif;background:var(--fondo);color:var(--texto);padding-bottom:120px}
-
-/* Cabecera */
-header{background:linear-gradient(160deg,#d24a3a,var(--rojo) 55%,#a93226);color:#fff;padding:18px 16px 20px;border-radius:0 0 30px 30px;box-shadow:0 8px 22px rgba(192,57,43,.35)}
-header h1{margin:0;font-size:20px;display:flex;justify-content:space-between;align-items:center}
-header h1 .x{background:rgba(255,255,255,.18);border-radius:50%;width:38px;height:38px;font-size:18px}
-
-/* Frase motivadora: grande y en relieve */
-#frase{margin:14px 0 4px;padding:20px 18px;font-size:23px;line-height:1.3;font-weight:700;font-style:normal;text-wrap:balance;border-radius:24px;
-background:linear-gradient(145deg,rgba(255,255,255,.26),rgba(255,255,255,.05));
-border:1px solid rgba(255,255,255,.28);
-box-shadow:0 10px 20px rgba(0,0,0,.28),0 2px 0 rgba(255,255,255,.12),inset 0 2px 0 rgba(255,255,255,.4),inset 0 -4px 10px rgba(0,0,0,.18);
-text-shadow:0 1px 0 rgba(255,255,255,.35),0 3px 6px rgba(0,0,0,.4)}
-
-.barra{height:10px;background:rgba(0,0,0,.22);border-radius:10px;margin-top:14px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,.25)}
-.barra div{height:100%;width:0;background:#fff;border-radius:10px;transition:width .4s}
-#pct{font-size:13px;margin-top:6px}
-
-/* Barra inferior flotante */
-nav{display:flex;gap:4px;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));background:var(--tarjeta);border:1px solid var(--borde);border-radius:28px;padding:6px;z-index:6;box-shadow:0 10px 28px rgba(0,0,0,.2)}
-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;padding:8px 2px;font-size:11px;font-weight:600;color:var(--gris);border-radius:22px;transition:background .2s,color .2s,transform .15s}
-nav button i{font-style:normal;font-size:20px;line-height:1;transition:transform .2s}
-nav button:active{transform:scale(.93)}
-nav button.act{background:var(--rojo);color:#fff;box-shadow:0 4px 10px rgba(192,57,43,.4)}
-nav button.act i{transform:translateY(-2px) scale(1.15)}
-
-section{display:none;padding:16px 14px}
-section.act{display:block}
-.dias{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px}
-.dias button{flex:0 0 auto;border:1px solid var(--borde);background:var(--tarjeta);color:var(--texto);border-radius:999px;padding:9px 15px;font-size:14px;box-shadow:var(--sombra)}
-.dias button.act{background:var(--rojo);color:#fff;border-color:var(--rojo)}
-.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:22px;padding:14px;margin:12px 0;box-shadow:var(--sombra)}
-.tarea{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--borde)}
-.tarea:last-child{border-bottom:0}
-.tarea input[type=checkbox]{width:22px;height:22px;accent-color:var(--rojo);margin-top:2px}
-.tarea .t{flex:1}
-.tarea .t b{display:block;font-weight:600}
-.tarea .t small{color:var(--gris)}
-.tarea.hecha .t b{text-decoration:line-through;color:var(--gris)}
-.p1{border-left:4px solid #e74c3c;padding-left:8px}
-.p2{border-left:4px solid #f39c12;padding-left:8px}
-.p3{border-left:4px solid #3498db;padding-left:8px}
-.x{border:0;background:none;color:var(--gris);font-size:18px}
-input[type=text],input[type=time],select{width:100%;padding:12px 14px;border:1px solid var(--borde);border-radius:16px;font-size:16px;background:var(--tarjeta);color:var(--texto);margin:4px 0}
-.fila{display:flex;gap:8px}
-.btn{background:var(--rojo);color:#fff;border:0;border-radius:16px;padding:13px 16px;font-size:15px;font-weight:600;width:100%;margin-top:6px;box-shadow:0 4px 10px rgba(192,57,43,.25);transition:transform .15s}
-.btn:active{transform:scale(.97)}
-.btn.sec{background:var(--rojo-claro);color:var(--rojo);box-shadow:none}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
-.chips label{border:1px solid var(--borde);border-radius:999px;padding:7px 12px;font-size:13px}
-.chips input{display:none}
-.chips input:checked+span{color:var(--rojo);font-weight:700}
-#horario{border-radius:16px;overflow:hidden}
-table{width:100%;border-collapse:collapse;font-size:10px;table-layout:fixed}
-th,td{border:1px solid var(--borde);padding:2px;height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-th{background:var(--rojo-claro);color:var(--rojo)}
-td.h{width:30px;text-align:center;color:var(--gris)}
-td.ocu{background:var(--rojo);color:#fff}
-.temp{font-size:56px;text-align:center;font-weight:700;margin:20px 0;color:var(--rojo)}
-.racha{color:var(--rojo);font-weight:700;font-size:13px}
-.vacio{text-align:center;color:var(--gris);padding:24px}
+body{margin:0;background:var(--fondo);color:var(--texto);font-family:-apple-system,Helvetica,Arial,sans-serif;padding-bottom:90px}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+.card{background:var(--card);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.frase{font-size:22px;font-weight:800;text-align:center;line-height:1.3;padding:20px;border-radius:22px;background:linear-gradient(135deg,var(--rojo),var(--rojo-osc));text-shadow:0 2px 0 rgba(0,0,0,.35),0 4px 10px rgba(0,0,0,.4);box-shadow:inset 0 2px 6px rgba(255,255,255,.25),0 6px 16px rgba(0,0,0,.5)}
+.frase small{display:block;font-size:12px;font-weight:600;opacity:.8;margin-bottom:6px;letter-spacing:1px}
+h2{margin:0 0 10px;font-size:18px}
+.fila{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nivel{font-size:20px;font-weight:800;color:var(--oro)}
+.barra{height:16px;background:#3a2226;border-radius:10px;overflow:hidden;margin:8px 0}
+.barra>div{height:100%;width:0;background:linear-gradient(90deg,var(--rojo),var(--oro));border-radius:10px;transition:width .4s}
+.mini{font-size:13px;color:var(--gris)}
+.racha{font-size:18px;font-weight:700}
+.tarea{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#2d171b;margin-bottom:8px}
+.tarea.hecha{opacity:.5;text-decoration:line-through}
+.tarea input{width:24px;height:24px;accent-color:var(--rojo)}
+.tarea .t{flex:1;font-size:16px}
+.xpbadge{font-size:12px;color:var(--oro);font-weight:700}
+.del{background:none;border:none;color:var(--gris);font-size:20px}
+input[type=text],select{width:100%;padding:12px;border-radius:12px;border:1px solid #4a2a30;background:#2d171b;color:var(--texto);font-size:16px;margin-bottom:8px}
+button.btn{width:100%;padding:14px;border:none;border-radius:14px;background:var(--rojo);color:#fff;font-size:16px;font-weight:700}
+.dias{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.dias label{padding:8px 10px;border-radius:12px;background:#2d171b;font-size:14px}
+.dias input{display:none}
+.dias input:checked+span{color:var(--oro);font-weight:800}
+.switch{display:flex;justify-content:space-between;align-items:center}
+nav{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));max-width:536px;margin:0 auto;display:flex;background:rgba(34,17,20,.92);backdrop-filter:blur(10px);border-radius:26px;padding:6px;box-shadow:0 6px 20px rgba(0,0,0,.6)}
+nav button{flex:1;border:none;background:none;color:var(--gris);padding:10px 2px;border-radius:20px;font-size:12px;font-weight:700;transition:all .2s}
+nav button.act{background:var(--rojo);color:#fff;transform:scale(1.05)}
+.vista{display:none}.vista.act{display:block}
+.sem{display:grid;grid-template-columns:44px repeat(7,1fr);gap:2px;font-size:10px}
+.sem div{padding:4px 1px;text-align:center;border-radius:5px;background:#2d171b;min-height:20px;overflow:hidden}
+.sem .h{background:none;color:var(--gris)}
+.sem .on{background:var(--rojo);color:#fff}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--oro);color:#222;padding:12px 18px;border-radius:16px;font-weight:800;transition:transform .35s;z-index:9}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.carta{font-size:15px;text-align:center;padding:16px;border-radius:16px;border:2px dashed var(--oro);margin-top:10px}
 </style>
 </head>
 <body>
-<header>
-<h1><span>Mis Tareas</span><button class="x" style="color:#fff" onclick="tema()">☾</button></h1>
-<div id="frase"></div>
-<div class="barra"><div id="prog"></div></div>
-<div id="pct"></div>
-</header>
+<div class="toast" id="toast"></div>
+<div class="wrap">
 
-<section id="s-hoy" class="act">
-<div class="dias" id="dias"></div>
-<div class="tarjeta">
-<input type="text" id="rapida" placeholder="Añadir rápido: Estudiar 18:00" onkeydown="if(event.key==='Enter')rapida()">
-<button class="btn" onclick="rapida()">Añadir</button>
-</div>
-<div id="lista"></div>
-</section>
+<div class="frase" id="frase"></div>
+<div style="height:14px"></div>
 
-<section id="s-nueva">
-<div class="tarjeta">
-<h3>Nueva tarea</h3>
-<input type="text" id="n-titulo" placeholder="¿Qué tienes que hacer?">
-<div class="fila">
-<input type="time" id="n-hora">
-<select id="n-dur"><option value="1">1 h</option><option value="2">2 h</option><option value="3">3 h</option><option value="0.5">30 min</option></select>
+<!-- HOY -->
+<div class="vista act" id="v-hoy">
+  <div class="card">
+    <div class="fila"><div class="nivel" id="nivel">Nivel 1</div><div class="racha" id="racha">🔥 0</div></div>
+    <div class="barra"><div id="barraxp"></div></div>
+    <div class="mini" id="xptxt">0 / 100 XP</div>
+  </div>
+  <div class="card">
+    <h2>Tareas de hoy</h2>
+    <div class="barra"><div id="barradia"></div></div>
+    <div class="mini" id="diatxt"></div>
+    <div id="lista" style="margin-top:10px"></div>
+  </div>
 </div>
-<select id="n-prio"><option value="1">Prioridad alta</option><option value="2" selected>Prioridad media</option><option value="3">Prioridad baja</option></select>
-<p style="margin:8px 0 2px;font-size:13px;color:var(--gris)">Se repite estos días:</p>
-<div class="chips" id="n-dias"></div>
-<input type="text" id="n-sub" placeholder="Subtareas separadas por coma (opcional)">
-<button class="btn" onclick="crear()">Guardar tarea</button>
-</div>
-</section>
 
-<section id="s-sem">
-<div class="tarjeta" style="padding:6px"><div id="horario"></div></div>
-</section>
+<!-- NUEVA -->
+<div class="vista" id="v-nueva">
+  <div class="card">
+    <h2>Nueva tarea</h2>
+    <input type="text" id="nt" placeholder="¿Qué quieres hacer?">
+    <div class="mini" style="margin-bottom:6px">Días en que se repite:</div>
+    <div class="dias" id="dias"></div>
+    <div class="mini" style="margin-bottom:6px">Hora (opcional):</div>
+    <select id="hora"></select>
+    <div class="mini" style="margin-bottom:6px">Dificultad (da más XP):</div>
+    <select id="dif">
+      <option value="10">Fácil (10 XP)</option>
+      <option value="20" selected>Normal (20 XP)</option>
+      <option value="35">Difícil (35 XP)</option>
+    </select>
+    <button class="btn" onclick="añadir()">Añadir tarea</button>
+  </div>
+</div>
 
-<section id="s-hab">
-<div class="tarjeta">
-<input type="text" id="h-nombre" placeholder="Nuevo hábito: Beber agua">
-<button class="btn" onclick="nuevoHabito()">Añadir hábito</button>
+<!-- SEMANA -->
+<div class="vista" id="v-semana">
+  <div class="card">
+    <h2>Horario semanal</h2>
+    <div class="sem" id="sem"></div>
+  </div>
 </div>
-<div id="habitos"></div>
-</section>
 
-<section id="s-foco">
-<div class="tarjeta">
-<div class="temp" id="temp">25:00</div>
-<div class="fila">
-<button class="btn" onclick="foco(25)">Foco 25</button>
-<button class="btn sec" onclick="foco(5)">Descanso 5</button>
-<button class="btn sec" onclick="paraFoco()">Parar</button>
+<!-- HABITOS -->
+<div class="vista" id="v-habitos">
+  <div class="card">
+    <h2>Hábitos y racha</h2>
+    <div class="racha" id="racha2"></div>
+    <div class="mini" id="mejor"></div>
+    <div class="mini" id="totales" style="margin-top:6px"></div>
+  </div>
+  <div class="card">
+    <div class="switch">
+      <div><h2 style="margin:0">Modo difícil</h2>
+      <div class="mini">Si dejas tareas sin hacer un día, pierdes XP y tu racha vuelve a 0.</div></div>
+      <input type="checkbox" id="hard" style="width:28px;height:28px;accent-color:#d62839" onchange="cambiarHard()">
+    </div>
+  </div>
+  <div class="card">
+    <h2>Carta del día</h2>
+    <div class="carta" id="carta"></div>
+    <button class="btn" style="margin-top:10px" onclick="nuevaCarta()">Sacar otra carta</button>
+  </div>
 </div>
-<p style="text-align:center;color:var(--gris);font-size:13px">Sesiones de foco hoy: <b id="sesiones">0</b></p>
+
+<!-- FOCO -->
+<div class="vista" id="v-foco">
+  <div class="card">
+    <h2>Modo foco</h2>
+    <div class="nivel" id="reloj" style="text-align:center;font-size:48px">25:00</div>
+    <div class="mini" style="text-align:center;margin-bottom:10px">Completa 25 minutos y ganas 15 XP.</div>
+    <button class="btn" onclick="focoIniciar()" id="bfoco">Empezar</button>
+  </div>
 </div>
-<div class="tarjeta">
-<button class="btn sec" onclick="avisos()">Activar avisos de recordatorio</button>
-<p style="font-size:12px;color:var(--gris)">En iPhone los avisos solo funcionan con la página abierta. Para que funcionen mejor, añade la página a la pantalla de inicio.</p>
-<button class="btn sec" onclick="exportar()">Copiar mis datos (copia de seguridad)</button>
-<button class="btn sec" onclick="importar()">Pegar datos guardados</button>
+
 </div>
-</section>
 
 <nav>
-<button class="act" onclick="ir('hoy',this)"><i>🏠</i><span>Hoy</span></button>
-<button onclick="ir('nueva',this)"><i>➕</i><span>Nueva</span></button>
-<button onclick="ir('sem',this)"><i>📅</i><span>Semana</span></button>
-<button onclick="ir('hab',this)"><i>🔥</i><span>Hábitos</span></button>
-<button onclick="ir('foco',this)"><i>🎯</i><span>Foco</span></button>
+  <button class="act" onclick="ir('hoy',this)">🏠 Hoy</button>
+  <button onclick="ir('nueva',this)">➕ Nueva</button>
+  <button onclick="ir('semana',this)">📅 Semana</button>
+  <button onclick="ir('habitos',this)">🔥 Hábitos</button>
+  <button onclick="ir('foco',this)">⏱ Foco</button>
 </nav>
 
 <script>
 const DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-const FRASES=['Un paso pequeño hoy vale más que un plan perfecto mañana.','Hazlo simple, hazlo hoy.','La constancia le gana al talento.','Cada tarea hecha es una victoria.','Empieza donde estás, con lo que tienes.','Tu yo del futuro te lo agradecerá.','No tienes que hacerlo todo, solo lo siguiente.','Despacio también es avanzar.'];
-let D=JSON.parse(localStorage.getItem('mt2')||'null')||{tareas:[],habitos:[],hechas:{},sesiones:{},oscuro:false};
-let dia=new Date().getDay();
-const guardar=()=>localStorage.setItem('mt2',JSON.stringify(D));
-const hoyStr=()=>new Date().toISOString().slice(0,10);
-const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function ir(id,b){document.querySelectorAll('section').forEach(s=>s.classList.remove('act'));document.getElementById('s-'+id).classList.add('act');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('act'));b.classList.add('act');if(id==='sem')pintaSemana();}
-function tema(){D.oscuro=!D.oscuro;document.body.classList.toggle('oscuro',D.oscuro);guardar();}
-
-function pintaDias(){const c=document.getElementById('dias');c.innerHTML='';const orden=[1,2,3,4,5,6,0];orden.forEach(i=>{const b=document.createElement('button');b.textContent=DIAS[i]+(i===new Date().getDay()?' •':'');if(i===dia)b.classList.add('act');b.onclick=()=>{dia=i;pintaDias();pintaLista();};c.appendChild(b);});}
-
-function clave(t){return hoyStr()+'|'+t.id;}
-function pintaLista(){
- const l=document.getElementById('lista');
- const ts=D.tareas.filter(t=>t.dias.includes(dia)).sort((a,b)=>(a.hora||'99').localeCompare(b.hora||'99')||a.prio-b.prio);
- if(!ts.length){l.innerHTML='<div class="vacio">Nada para este día. Añade una tarea arriba.</div>';}
- else{l.innerHTML='<div class="tarjeta">'+ts.map(t=>{
-  const h=!!D.hechas[clave(t)];
-  const subs=(t.subs||[]).map((s,i)=>'<label style="display:block;font-size:13px;margin:4px 0 0 4px"><input type="checkbox" '+(D.hechas[clave(t)+'#'+i]?'checked':'')+' onchange="marcaSub(\''+t.id+'\','+i+',this.checked)"> '+esc(s)+'</label>').join('');
-  return '<div class="tarea p'+t.prio+(h?' hecha':'')+'"><input type="checkbox" '+(h?'checked':'')+' onchange="marca(\''+t.id+'\',this.checked)"><div class="t"><b>'+esc(t.titulo)+'</b><small>'+(t.hora?t.hora+' · ':'')+t.dias.map(d=>DIAS[d]).join(' ')+'</small>'+subs+'</div><button class="x" onclick="borra(\''+t.id+'\')">✕</button></div>';}).join('')+'</div>';}
- pintaAvance();
+const FRASES=['Hoy es un buen día para subir de nivel.','La constancia le gana al talento.','Un paso pequeño sigue siendo un paso.','Hazlo aunque no tengas ganas.','Tu yo del futuro te lo agradecerá.','Disciplina es elegir lo difícil hoy.','No pares ahora, ya vas ganando XP.'];
+const CARTAS=['Confianza: haz hoy lo que te da un poco de miedo.','Fuerza: termina lo que empezaste ayer.','Disciplina: empieza por la tarea que más evitas.','Sabiduría: descansa bien, también es progreso.','Enfoque: una sola cosa a la vez, 25 minutos.','Valentía: pide lo que necesitas.'];
+let S=JSON.parse(localStorage.getItem('mt_estado')||'null')||{tareas:[],xp:0,racha:0,mejor:0,hechas:{},ultimoDia:'',hard:false,total:0};
+function guardar(){localStorage.setItem('mt_estado',JSON.stringify(S))}
+function hoyKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function xpParaNivel(n){return 100+(n-1)*50}
+function calcNivel(){let n=1,r=S.xp;while(r>=xpParaNivel(n)){r-=xpParaNivel(n);n++}return{n:n,r:r,max:xpParaNivel(n)}}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
+function ir(v,b){document.querySelectorAll('.vista').forEach(x=>x.classList.remove('act'));document.getElementById('v-'+v).classList.add('act');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('act'));b.classList.add('act');pintar()}
+function tareasDeHoy(){const d=new Date().getDay();return S.tareas.filter(t=>t.dias.includes(d))}
+function revisarDiaAnterior(){
+  const hk=hoyKey();
+  if(S.ultimoDia&&S.ultimoDia!==hk){
+    const p=S.ultimoDia.split('-');const f=new Date(p[0],p[1]-1,p[2]);
+    const ayer=f.getDay();
+    const pend=S.tareas.filter(t=>t.dias.includes(ayer)&&!(S.hechas[S.ultimoDia]||[]).includes(t.id));
+    const habia=S.tareas.some(t=>t.dias.includes(ayer));
+    const ayerAyer=new Date();ayerAyer.setDate(ayerAyer.getDate()-1);
+    const esAyer=(ayerAyer.getFullYear()+'-'+(ayerAyer.getMonth()+1)+'-'+ayerAyer.getDate())===S.ultimoDia;
+    if(habia&&pend.length===0&&esAyer){S.racha++;if(S.racha>S.mejor)S.mejor=S.racha}
+    else if(habia&&pend.length>0){
+      if(S.hard){S.xp=Math.max(0,S.xp-pend.length*10);S.racha=0;toast('Modo difícil: perdiste XP y tu racha')}
+      else if(!esAyer||pend.length>0){S.racha=0}
+    }else if(!esAyer){S.racha=0}
+  }
+  S.ultimoDia=hk;guardar();
 }
-function marca(id,v){const t=D.tareas.find(x=>x.id===id);if(v)D.hechas[clave(t)]=1;else delete D.hechas[clave(t)];guardar();pintaLista();}
-function marcaSub(id,i,v){const t=D.tareas.find(x=>x.id===id);const k=clave(t)+'#'+i;if(v)D.hechas[k]=1;else delete D.hechas[k];guardar();}
-function borra(id){if(confirm('¿Borrar esta tarea?')){D.tareas=D.tareas.filter(t=>t.id!==id);guardar();pintaLista();}}
-function pintaAvance(){
- const hoy=new Date().getDay();const ts=D.tareas.filter(t=>t.dias.includes(hoy));
- const hechas=ts.filter(t=>D.hechas[clave(t)]).length;
- const p=ts.length?Math.round(hechas/ts.length*100):0;
- document.getElementById('prog').style.width=p+'%';
- document.getElementById('pct').textContent='Hoy: '+hechas+' de '+ts.length+' tareas ('+p+'%)';
+function pintar(){
+  document.getElementById('frase').innerHTML='<small>MENSAJE DEL DÍA</small>'+S.frase;
+  const nv=calcNivel();
+  document.getElementById('nivel').textContent='Nivel '+nv.n;
+  document.getElementById('barraxp').style.width=(nv.r/nv.max*100)+'%';
+  document.getElementById('xptxt').textContent=nv.r+' / '+nv.max+' XP';
+  document.getElementById('racha').textContent='🔥 '+S.racha;
+  document.getElementById('racha2').textContent='🔥 Racha actual: '+S.racha+' días';
+  document.getElementById('mejor').textContent='Mejor racha: '+S.mejor+' días';
+  document.getElementById('totales').textContent='Tareas completadas en total: '+S.total+' · XP total: '+S.xp;
+  document.getElementById('hard').checked=S.hard;
+  const hk=hoyKey();const hechas=S.hechas[hk]||[];
+  const th=tareasDeHoy().sort((a,b)=>(a.hora??99)-(b.hora??99));
+  const l=document.getElementById('lista');l.innerHTML='';
+  if(th.length===0)l.innerHTML='<div class="mini">No tienes tareas para hoy. Añade una en Nueva.</div>';
+  th.forEach(t=>{
+    const h=hechas.includes(t.id);
+    const d=document.createElement('div');d.className='tarea'+(h?' hecha':'');
+    d.innerHTML='<input type="checkbox" '+(h?'checked':'')+' onchange="marcar('+t.id+')"><div class="t">'+(t.hora!=null?String(t.hora).padStart(2,'0')+':00 · ':'')+esc(t.nombre)+'</div><div class="xpbadge">+'+t.xp+' XP</div><button class="del" onclick="borrar('+t.id+')">✕</button>';
+  l.appendChild(d)});
+  const hechasHoy=th.filter(t=>hechas.includes(t.id)).length;
+  const pct=th.length?hechasHoy/th.length*100:0;
+  document.getElementById('barradia').style.width=pct+'%';
+  document.getElementById('diatxt').textContent=hechasHoy+' de '+th.length+' tareas hechas';
+  // semana
+  const s=document.getElementById('sem');s.innerHTML='<div class="h"></div>';
+  [1,2,3,4,5,6,0].forEach(d=>{s.innerHTML+='<div class="h">'+DIAS[d]+'</div>'});
+  for(let h=0;h<24;h++){
+    s.innerHTML+='<div class="h">'+String(h).padStart(2,'0')+'</div>';
+    [1,2,3,4,5,6,0].forEach(d=>{
+      const t=S.tareas.find(x=>x.hora===h&&x.dias.includes(d));
+      s.innerHTML+='<div class="'+(t?'on':'')+'">'+(t?esc(t.nombre).slice(0,4):'')+'</div>';
+    });
+  }
 }
-function rapida(){
- const i=document.getElementById('rapida');let txt=i.value.trim();if(!txt)return;
- const m=txt.match(/(\d{1,2}):(\d{2})/);let hora='';
- if(m){hora=m[1].padStart(2,'0')+':'+m[2];txt=txt.replace(m[0],'').trim();}
- D.tareas.push({id:'t'+Date.now(),titulo:txt,hora,dur:1,prio:2,dias:[dia],subs:[]});
- i.value='';guardar();pintaLista();
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function marcar(id){
+  const hk=hoyKey();S.hechas[hk]=S.hechas[hk]||[];
+  const t=S.tareas.find(x=>x.id===id);
+  const i=S.hechas[hk].indexOf(id);
+  const antes=calcNivel().n;
+  if(i>=0){S.hechas[hk].splice(i,1);S.xp=Math.max(0,S.xp-t.xp);S.total=Math.max(0,S.total-1)}
+  else{S.hechas[hk].push(id);S.xp+=t.xp;S.total++;toast('+'+t.xp+' XP')}
+  const despues=calcNivel().n;
+  if(despues>antes)toast('🎉 ¡Subiste al nivel '+despues+'!');
+  const th=tareasDeHoy();
+  if(th.length&&th.every(x=>S.hechas[hk].includes(x.id))){S.xp+=25;toast('Día completo: +25 XP extra')}
+  guardar();pintar();
 }
-function crear(){
- const titulo=document.getElementById('n-titulo').value.trim();if(!titulo){alert('Escribe un título');return;}
- const dias=[...document.querySelectorAll('#n-dias input:checked')].map(x=>+x.value);
- if(!dias.length){alert('Elige al menos un día');return;}
- const subs=document.getElementById('n-sub').value.split(',').map(s=>s.trim()).filter(Boolean);
- D.tareas.push({id:'t'+Date.now(),titulo,hora:document.getElementById('n-hora').value,dur:+document.getElementById('n-dur').value,prio:+document.getElementById('n-prio').value,dias,subs});
- guardar();document.getElementById('n-titulo').value='';document.getElementById('n-sub').value='';
- pintaLista();ir('hoy',document.querySelector('nav button'));
+function borrar(id){if(confirm('¿Borrar esta tarea?')){S.tareas=S.tareas.filter(t=>t.id!==id);guardar();pintar()}}
+function añadir(){
+  const n=document.getElementById('nt').value.trim();if(!n){toast('Escribe un nombre');return}
+  const dias=[...document.querySelectorAll('#dias input:checked')].map(x=>+x.value);
+  if(!dias.length){toast('Elige al menos un día');return}
+  const hv=document.getElementById('hora').value;
+  S.tareas.push({id:Date.now(),nombre:n,dias:dias,hora:hv===''?null:+hv,xp:+document.getElementById('dif').value});
+  document.getElementById('nt').value='';guardar();toast('Tarea añadida');pintar();
 }
-function pintaChips(){const c=document.getElementById('n-dias');[1,2,3,4,5,6,0].forEach(i=>{const l=document.createElement('label');l.innerHTML='<input type="checkbox" value="'+i+'"><span>'+DIAS[i]+'</span>';c.appendChild(l);});}
-
-function pintaSemana(){
- const orden=[1,2,3,4,5,6,0];
- let h='<table><tr><th class="h"></th>'+orden.map(i=>'<th>'+DIAS[i]+'</th>').join('')+'</tr>';
- for(let hr=0;hr<24;hr++){
-  h+='<tr><td class="h">'+hr+'</td>';
-  orden.forEach(d=>{
-   const t=D.tareas.find(x=>x.dias.includes(d)&&x.hora&&(()=>{const ini=parseInt(x.hora);return hr>=ini&&hr<ini+Math.ceil(x.dur||1);})());
-   h+=t?'<td class="ocu">'+esc(t.titulo)+'</td>':'<td></td>';
-  });
-  h+='</tr>';
- }
- document.getElementById('horario').innerHTML=h+'</table>';
+function cambiarHard(){S.hard=document.getElementById('hard').checked;guardar();toast(S.hard?'Modo difícil activado':'Modo difícil desactivado')}
+function nuevaCarta(){document.getElementById('carta').textContent=CARTAS[Math.floor(Math.random()*CARTAS.length)]}
+let foco=null,seg=1500;
+function focoIniciar(){
+  const b=document.getElementById('bfoco');
+  if(foco){clearInterval(foco);foco=null;seg=1500;b.textContent='Empezar';document.getElementById('reloj').textContent='25:00';return}
+  b.textContent='Cancelar';
+  foco=setInterval(()=>{
+    seg--;document.getElementById('reloj').textContent=String(Math.floor(seg/60)).padStart(2,'0')+':'+String(seg%60).padStart(2,'0');
+    if(seg<=0){clearInterval(foco);foco=null;seg=1500;b.textContent='Empezar';S.xp+=15;guardar();toast('Foco completado: +15 XP');pintar()}
+  },1000);
 }
-
-function pintaHabitos(){
- const c=document.getElementById('habitos');
- if(!D.habitos.length){c.innerHTML='<div class="vacio">Aún no tienes hábitos.</div>';return;}
- c.innerHTML=D.habitos.map((h,i)=>{
-  const hoy=hoyStr();const ok=h.dias.includes(hoy);
-  let racha=0;const d=new Date();if(!ok)d.setDate(d.getDate()-1);
-  while(h.dias.includes(d.toISOString().slice(0,10))){racha++;d.setDate(d.getDate()-1);}
-  return '<div class="tarjeta tarea" style="align-items:center"><input type="checkbox" '+(ok?'checked':'')+' onchange="toggleHab('+i+')"><div class="t"><b>'+esc(h.nombre)+'</b><span class="racha">Racha: '+racha+' día'+(racha===1?'':'s')+'</span></div><button class="x" onclick="borraHab('+i+')">✕</button></div>';}).join('');
-}
-function nuevoHabito(){const i=document.getElementById('h-nombre');if(!i.value.trim())return;D.habitos.push({nombre:i.value.trim(),dias:[]});i.value='';guardar();pintaHabitos();}
-function toggleHab(i){const h=D.habitos[i],t=hoyStr();const k=h.dias.indexOf(t);if(k>-1)h.dias.splice(k,1);else h.dias.push(t);guardar();pintaHabitos();}
-function borraHab(i){if(confirm('¿Borrar hábito?')){D.habitos.splice(i,1);guardar();pintaHabitos();}}
-
-let reloj=null,seg=0;
-function pintaTemp(){document.getElementById('temp').textContent=String(Math.floor(seg/60)).padStart(2,'0')+':'+String(seg%60).padStart(2,'0');}
-function foco(m){paraFoco();seg=m*60;pintaTemp();reloj=setInterval(()=>{seg--;pintaTemp();if(seg<=0){paraFoco();if(m===25){D.sesiones[hoyStr()]=(D.sesiones[hoyStr()]||0)+1;guardar();pintaSes();}aviso('¡Tiempo terminado!');if(navigator.vibrate)navigator.vibrate(400);}},1000);}
-function paraFoco(){clearInterval(reloj);reloj=null;}
-function pintaSes(){document.getElementById('sesiones').textContent=D.sesiones[hoyStr()]||0;}
-
-function avisos(){if(!('Notification' in window)){alert('Tu navegador no permite avisos.');return;}Notification.requestPermission().then(p=>alert(p==='granted'?'Avisos activados':'Avisos no permitidos'));}
-function aviso(t){if('Notification' in window&&Notification.permission==='granted'){new Notification('Mis Tareas',{body:t});}else{alert(t);}}
-let avisadas={};
-setInterval(()=>{const n=new Date();const hm=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
- D.tareas.filter(t=>t.hora===hm&&t.dias.includes(n.getDay())&&!D.hechas[clave(t)]).forEach(t=>{const k=clave(t)+hm;if(!avisadas[k]){avisadas[k]=1;aviso('Ahora: '+t.titulo);}});},20000);
-
-function exportar(){const s=JSON.stringify(D);navigator.clipboard.writeText(s).then(()=>alert('Datos copiados. Pégalos en Notas para guardarlos.'));}
-function importar(){const s=prompt('Pega aquí tus datos guardados:');if(!s)return;try{D=JSON.parse(s);guardar();location.reload();}catch(e){alert('Los datos no son válidos.');}}
-
-document.getElementById('frase').textContent=FRASES[Math.floor(Math.random()*FRASES.length)];
-if(D.oscuro)document.body.classList.add('oscuro');
-pintaDias();pintaChips();pintaLista();pintaHabitos();pintaSes();
+// iniciar
+const dc=document.getElementById('dias');
+[1,2,3,4,5,6,0].forEach(d=>{dc.innerHTML+='<label><input type="checkbox" value="'+d+'"><span>'+DIAS[d]+'</span></label>'});
+const hs=document.getElementById('hora');hs.innerHTML='<option value="">Sin hora</option>';
+for(let h=0;h<24;h++)hs.innerHTML+='<option value="'+h+'">'+String(h).padStart(2,'0')+':00</option>';
+S.frase=FRASES[Math.floor(Math.random()*FRASES.length)];
+revisarDiaAnterior();nuevaCarta();pintar();
 </script>
 </body>
 </html>
