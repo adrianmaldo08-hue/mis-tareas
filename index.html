@@ -15,24 +15,33 @@ body{margin:0;background:var(--fondo);color:var(--texto);font-family:-apple-syst
 h2{margin:0 0 10px;font-size:18px}
 .fila{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .nivel{font-size:20px;font-weight:800;color:var(--oro)}
-.barra{height:16px;background:#3a2226;border-radius:10px;overflow:hidden;margin:8px 0}
+.barra{height:16px;background:#3a2226;border-radius:10px;overflow:hidden;margin:8px 0;transition:box-shadow .3s}
 .barra>div{height:100%;width:0;background:linear-gradient(90deg,var(--rojo),var(--oro));border-radius:10px;transition:width .4s}
+.barra.glow{box-shadow:0 0 14px var(--oro)}
 .mini{font-size:13px;color:var(--gris)}
 .racha{font-size:18px;font-weight:700}
-.tarea{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#2d171b;margin-bottom:8px}
+.tarea{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#2d171b;margin-bottom:8px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s}
+.tarea:active{transform:scale(.97)}
 .tarea.hecha{opacity:.5;text-decoration:line-through}
-.tarea input{width:24px;height:24px;accent-color:var(--rojo)}
+.tarea.pop{animation:pop .45s}
+.tarea input{width:24px;height:24px;accent-color:var(--rojo);pointer-events:none}
 .tarea .t{flex:1;font-size:16px}
 .xpbadge{font-size:12px;color:var(--oro);font-weight:700}
-.del{background:none;border:none;color:var(--gris);font-size:20px}
-input[type=text],select{width:100%;padding:12px;border-radius:12px;border:1px solid #4a2a30;background:#2d171b;color:var(--texto);font-size:16px;margin-bottom:8px}
+.del{background:none;border:none;color:var(--gris);font-size:20px;padding:4px 8px}
+input[type=text],select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #4a2a30;background:#2d171b;color:var(--texto);font-size:16px;margin-bottom:8px;font-family:inherit}
+textarea{height:80px;resize:none;font-size:13px}
 button.btn{width:100%;padding:14px;border:none;border-radius:14px;background:var(--rojo);color:#fff;font-size:16px;font-weight:700}
+button.btn.sec{background:#3a2226;margin-top:8px}
 .dias{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .dias label{padding:8px 10px;border-radius:12px;background:#2d171b;font-size:14px}
 .dias input{display:none}
 .dias input:checked+span{color:var(--oro);font-weight:800}
-.switch{display:flex;justify-content:space-between;align-items:center}
-nav{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));max-width:536px;margin:0 auto;display:flex;background:rgba(34,17,20,.92);backdrop-filter:blur(10px);border-radius:26px;padding:6px;box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip{border:none;padding:10px 14px;border-radius:16px;background:#2d171b;color:var(--texto);font-size:14px;font-weight:700}
+.chip:active{background:var(--rojo)}
+.switch{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.switch+.switch{margin-top:14px}
+nav{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));max-width:536px;margin:0 auto;display:flex;background:rgba(34,17,20,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:26px;padding:6px;box-shadow:0 6px 20px rgba(0,0,0,.6)}
 nav button{flex:1;border:none;background:none;color:var(--gris);padding:10px 2px;border-radius:20px;font-size:12px;font-weight:700;transition:all .2s}
 nav button.act{background:var(--rojo);color:#fff;transform:scale(1.05)}
 .vista{display:none}.vista.act{display:block}
@@ -40,9 +49,24 @@ nav button.act{background:var(--rojo);color:#fff;transform:scale(1.05)}
 .sem div{padding:4px 1px;text-align:center;border-radius:5px;background:#2d171b;min-height:20px;overflow:hidden}
 .sem .h{background:none;color:var(--gris)}
 .sem .on{background:var(--rojo);color:#fff}
-.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--oro);color:#222;padding:12px 18px;border-radius:16px;font-weight:800;transition:transform .35s;z-index:9}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--oro);color:#222;padding:12px 18px;border-radius:16px;font-weight:800;transition:transform .35s;z-index:9;max-width:90%;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .carta{font-size:15px;text-align:center;padding:16px;border-radius:16px;border:2px dashed var(--oro);margin-top:10px}
+.res{display:flex;gap:6px;margin-top:6px}
+.col{flex:1;text-align:center;font-size:11px;color:var(--gris)}
+.col .b{height:60px;background:#3a2226;border-radius:8px;display:flex;align-items:flex-end;overflow:hidden;margin-bottom:4px}
+.col .b i{display:block;width:100%;background:linear-gradient(0deg,var(--rojo),var(--oro));border-radius:8px;transition:height .4s}
+.ins{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ins div{text-align:center;font-size:11px;padding:10px 4px;border-radius:14px;background:#2d171b;color:var(--gris)}
+.ins div.on{color:var(--oro);background:#3a1d22}
+.ins span{display:block;font-size:24px;filter:grayscale(1);opacity:.35;margin-bottom:2px}
+.ins .on span{filter:none;opacity:1}
+.flota{position:fixed;font-weight:800;color:var(--oro);pointer-events:none;z-index:10;text-shadow:0 2px 6px rgba(0,0,0,.7);animation:sube .9s ease-out forwards}
+.conf{position:fixed;top:-14px;width:8px;height:12px;z-index:10;pointer-events:none;animation:cae 1.8s ease-in forwards}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.06);background:#4a1f26}100%{transform:scale(1)}}
+@keyframes sube{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,-80px);opacity:0}}
+@keyframes cae{to{transform:translateY(110vh) rotate(540deg);opacity:.8}}
+@media (prefers-reduced-motion:reduce){.tarea.pop,.flota,.conf{animation:none}.barra>div{transition:none}}
 </style>
 </head>
 <body>
@@ -56,13 +80,19 @@ nav button.act{background:var(--rojo);color:#fff;transform:scale(1.05)}
 <div class="vista act" id="v-hoy">
   <div class="card">
     <div class="fila"><div class="nivel" id="nivel">Nivel 1</div><div class="racha" id="racha">🔥 0</div></div>
-    <div class="barra"><div id="barraxp"></div></div>
+    <div class="barra" id="barraxpw"><div id="barraxp"></div></div>
     <div class="mini" id="xptxt">0 / 100 XP</div>
+  </div>
+  <div class="card">
+    <div class="fila"><h2 style="margin:0">🎯 Reto de la semana</h2><div class="xpbadge" id="retoxp"></div></div>
+    <div class="mini" id="retotxt" style="margin-top:6px"></div>
+    <div class="barra"><div id="retobarra"></div></div>
   </div>
   <div class="card">
     <h2>Tareas de hoy</h2>
     <div class="barra"><div id="barradia"></div></div>
     <div class="mini" id="diatxt"></div>
+    <div class="mini" style="margin-top:4px">Toca una tarea para marcarla.</div>
     <div id="lista" style="margin-top:10px"></div>
   </div>
 </div>
@@ -73,6 +103,11 @@ nav button.act{background:var(--rojo);color:#fff;transform:scale(1.05)}
     <h2>Nueva tarea</h2>
     <input type="text" id="nt" placeholder="¿Qué quieres hacer?">
     <div class="mini" style="margin-bottom:6px">Días en que se repite:</div>
+    <div class="chips" style="margin-top:0">
+      <button class="chip" onclick="diasSel([0,1,2,3,4,5,6])">Todos</button>
+      <button class="chip" onclick="diasSel([1,2,3,4,5])">Lun a Vie</button>
+      <button class="chip" onclick="diasSel([6,0])">Fin de semana</button>
+    </div>
     <div class="dias" id="dias"></div>
     <div class="mini" style="margin-bottom:6px">Hora (opcional):</div>
     <select id="hora"></select>
@@ -101,18 +136,39 @@ nav button.act{background:var(--rojo);color:#fff;transform:scale(1.05)}
     <div class="racha" id="racha2"></div>
     <div class="mini" id="mejor"></div>
     <div class="mini" id="totales" style="margin-top:6px"></div>
+    <div class="mini" id="comod" style="margin-top:10px"></div>
   </div>
   <div class="card">
-    <div class="switch">
-      <div><h2 style="margin:0">Modo difícil</h2>
-      <div class="mini">Si dejas tareas sin hacer un día, pierdes XP y tu racha vuelve a 0.</div></div>
-      <input type="checkbox" id="hard" style="width:28px;height:28px;accent-color:#d62839" onchange="cambiarHard()">
-    </div>
+    <h2>Tus últimos 7 días</h2>
+    <div id="resumen"></div>
+  </div>
+  <div class="card">
+    <h2>Insignias</h2>
+    <div class="ins" id="ins"></div>
   </div>
   <div class="card">
     <h2>Carta del día</h2>
     <div class="carta" id="carta"></div>
     <button class="btn" style="margin-top:10px" onclick="nuevaCarta()">Sacar otra carta</button>
+  </div>
+  <div class="card">
+    <div class="switch">
+      <div><h2 style="margin:0">Modo difícil</h2>
+      <div class="mini">Si dejas tareas sin hacer un día, pierdes XP y tu racha vuelve a 0 (sin comodín).</div></div>
+      <input type="checkbox" id="hard" style="width:28px;height:28px;accent-color:#d62839" onchange="cambiarHard()">
+    </div>
+    <div class="switch">
+      <div><h2 style="margin:0">Sonidos y efectos</h2>
+      <div class="mini">Confeti, sonidos y vibración al ganar XP.</div></div>
+      <input type="checkbox" id="fx" style="width:28px;height:28px;accent-color:#d62839" onchange="cambiarFx()">
+    </div>
+  </div>
+  <div class="card">
+    <h2>Respaldo de tus datos</h2>
+    <div class="mini" style="margin-bottom:8px">Tus datos se guardan en este navegador. Copia un respaldo de vez en cuando y guárdalo en Notas. Para restaurar, pégalo aquí abajo.</div>
+    <textarea id="resp" placeholder="Aquí aparece o pegas tu respaldo"></textarea>
+    <button class="btn" onclick="copiarResp()">Copiar respaldo</button>
+    <button class="btn sec" onclick="restaurar()">Restaurar desde el texto</button>
   </div>
 </div>
 
@@ -129,67 +185,218 @@ nav button.act{background:var(--rojo);color:#fff;transform:scale(1.05)}
 </div>
 
 <nav>
-  <button class="act" onclick="ir('hoy',this)">🏠 Hoy</button>
-  <button onclick="ir('nueva',this)">➕ Nueva</button>
-  <button onclick="ir('semana',this)">📅 Semana</button>
-  <button onclick="ir('habitos',this)">🔥 Hábitos</button>
-  <button onclick="ir('foco',this)">⏱ Foco</button>
+  <button class="act" data-v="hoy" onclick="ir('hoy',this)">🏠 Hoy</button>
+  <button data-v="nueva" onclick="ir('nueva',this)">➕ Nueva</button>
+  <button data-v="semana" onclick="ir('semana',this)">📅 Semana</button>
+  <button data-v="habitos" onclick="ir('habitos',this)">🔥 Hábitos</button>
+  <button data-v="foco" onclick="ir('foco',this)">⏱ Foco</button>
 </nav>
 
 <script>
 const DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const FRASES=['Hoy es un buen día para subir de nivel.','La constancia le gana al talento.','Un paso pequeño sigue siendo un paso.','Hazlo aunque no tengas ganas.','Tu yo del futuro te lo agradecerá.','Disciplina es elegir lo difícil hoy.','No pares ahora, ya vas ganando XP.'];
 const CARTAS=['Confianza: haz hoy lo que te da un poco de miedo.','Fuerza: termina lo que empezaste ayer.','Disciplina: empieza por la tarea que más evitas.','Sabiduría: descansa bien, también es progreso.','Enfoque: una sola cosa a la vez, 25 minutos.','Valentía: pide lo que necesitas.'];
-let S=JSON.parse(localStorage.getItem('mt_estado')||'null')||{tareas:[],xp:0,racha:0,mejor:0,hechas:{},ultimoDia:'',hard:false,total:0};
-function guardar(){localStorage.setItem('mt_estado',JSON.stringify(S))}
-function hoyKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+const RAPIDAS=['💧 Beber agua','📖 Leer 10 minutos','🏃 Moverme un rato','☀️ Planear mi día'];
+const RETOS=[
+  {n:'Completa 4 días enteros',t:'dias',m:4,xp:60},
+  {n:'Gana 250 XP esta semana',t:'xp',m:250,xp:50},
+  {n:'Haz 3 sesiones de foco',t:'focos',m:3,xp:40}
+];
+const INS=[
+  {id:'p1',n:'Primer paso',e:'🌱',c:()=>S.total>=1},
+  {id:'t10',n:'10 tareas',e:'✅',c:()=>S.total>=10},
+  {id:'t50',n:'50 tareas',e:'💪',c:()=>S.total>=50},
+  {id:'r3',n:'Racha de 3',e:'🔥',c:()=>S.mejor>=3},
+  {id:'r7',n:'Racha de 7',e:'🏅',c:()=>S.mejor>=7},
+  {id:'n5',n:'Nivel 5',e:'⭐',c:()=>calcNivel().n>=5},
+  {id:'f5',n:'5 focos',e:'⏱',c:()=>S.focos>=5},
+  {id:'rt',n:'Reto semanal',e:'🎯',c:()=>S.retos>=1}
+];
+function def(){return{tareas:[],xp:0,racha:0,mejor:0,hechas:{},ultimoDia:'',hard:false,total:0,comodines:1,fx:true,bonus:{},focos:0,retos:0,insignias:[],semana:{k:'',dias:0,xp:0,focos:0,hecho:false}}}
+let S;
+try{S=Object.assign(def(),JSON.parse(localStorage.getItem('mt_estado')||'null')||{})}catch(e){S=def()}
+function guardar(){try{localStorage.setItem('mt_estado',JSON.stringify(S))}catch(e){}}
+function key(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function hoyKey(){return key(new Date())}
+function lunesKey(){const d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));return key(d)}
 function xpParaNivel(n){return 100+(n-1)*50}
 function calcNivel(){let n=1,r=S.xp;while(r>=xpParaNivel(n)){r-=xpParaNivel(n);n++}return{n:n,r:r,max:xpParaNivel(n)}}
-function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
+function ganar(n){S.xp=Math.max(0,S.xp+n);S.semana.xp=Math.max(0,S.semana.xp+n)}
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+// avisos en cola
+let cola=[],mostrando=false;
+function toast(t){cola.push(t);if(!mostrando)sig()}
+function sig(){
+  if(!cola.length){mostrando=false;return}
+  mostrando=true;const e=document.getElementById('toast');
+  e.textContent=cola.shift();e.classList.add('show');
+  setTimeout(()=>{e.classList.remove('show');setTimeout(sig,300)},1700);
+}
+
+// efectos
+let ac=null;
+function sonido(f1,f2){
+  if(!S.fx)return;
+  try{
+    const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+    if(!ac)ac=new A();if(ac.state==='suspended')ac.resume();
+    const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;
+    o.type='sine';o.frequency.setValueAtTime(f1,t);o.frequency.setValueAtTime(f2,t+.1);
+    g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);
+    o.connect(g);g.connect(ac.destination);o.start();o.stop(t+.3);
+  }catch(e){}
+}
+function vibrar(){if(S.fx&&navigator.vibrate)navigator.vibrate(15)}
+function flotar(txt,x,y){
+  if(!S.fx)return;
+  const e=document.createElement('div');e.className='flota';e.textContent=txt;
+  e.style.left=x+'px';e.style.top=(y-20)+'px';document.body.appendChild(e);
+  setTimeout(()=>e.remove(),950);
+}
+function confeti(){
+  if(!S.fx)return;
+  const cs=['#d62839','#ffc94d','#3ddc84','#f6eaec'];
+  for(let i=0;i<32;i++){
+    const d=document.createElement('div');d.className='conf';
+    d.style.left=Math.random()*100+'vw';d.style.background=cs[i%cs.length];
+    d.style.animationDelay=(Math.random()*.5)+'s';d.style.animationDuration=(1.4+Math.random()*.8)+'s';
+    document.body.appendChild(d);setTimeout(()=>d.remove(),2800);
+  }
+}
+function brillo(){
+  const b=document.getElementById('barraxpw');if(!b||!S.fx)return;
+  b.classList.add('glow');setTimeout(()=>b.classList.remove('glow'),700);
+}
+
+// navegación
 function ir(v,b){document.querySelectorAll('.vista').forEach(x=>x.classList.remove('act'));document.getElementById('v-'+v).classList.add('act');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('act'));b.classList.add('act');pintar()}
+function irA(v){ir(v,document.querySelector('nav button[data-v="'+v+'"]'))}
 function tareasDeHoy(){const d=new Date().getDay();return S.tareas.filter(t=>t.dias.includes(d))}
+
+// semana, reto, insignias
+function revisarSemana(){
+  const k=lunesKey();
+  if(S.semana.k!==k)S.semana={k:k,dias:0,xp:0,focos:0,hecho:false};
+}
+function retoActual(){
+  const n=[...S.semana.k].reduce((a,c)=>a+c.charCodeAt(0),0);
+  return RETOS[n%RETOS.length];
+}
+function revisarReto(){
+  const r=retoActual();
+  if(!S.semana.hecho&&S.semana[r.t]>=r.m){
+    S.semana.hecho=true;S.retos++;ganar(r.xp);
+    toast('🎯 Reto semanal cumplido: +'+r.xp+' XP');confeti();sonido(523,1047);
+  }
+}
+function revisarInsignias(silencio){
+  INS.forEach(i=>{
+    if(!S.insignias.includes(i.id)&&i.c()){
+      S.insignias.push(i.id);
+      if(!silencio){toast('🏆 Insignia nueva: '+i.n);sonido(784,988)}
+    }
+  });
+}
+function post(antes){
+  revisarReto();
+  const n=calcNivel().n;
+  if(n>antes){toast('🎉 ¡Subiste al nivel '+n+'!');confeti();sonido(523,1047)}
+  revisarInsignias(false);
+  guardar();pintar();brillo();
+}
+
+// racha y día anterior
 function revisarDiaAnterior(){
   const hk=hoyKey();
   if(S.ultimoDia&&S.ultimoDia!==hk){
     const p=S.ultimoDia.split('-');const f=new Date(p[0],p[1]-1,p[2]);
-    const ayer=f.getDay();
-    const pend=S.tareas.filter(t=>t.dias.includes(ayer)&&!(S.hechas[S.ultimoDia]||[]).includes(t.id));
-    const habia=S.tareas.some(t=>t.dias.includes(ayer));
-    const ayerAyer=new Date();ayerAyer.setDate(ayerAyer.getDate()-1);
-    const esAyer=(ayerAyer.getFullYear()+'-'+(ayerAyer.getMonth()+1)+'-'+ayerAyer.getDate())===S.ultimoDia;
-    if(habia&&pend.length===0&&esAyer){S.racha++;if(S.racha>S.mejor)S.mejor=S.racha}
+    const dia=f.getDay();
+    const pend=S.tareas.filter(t=>t.dias.includes(dia)&&!(S.hechas[S.ultimoDia]||[]).includes(t.id));
+    const habia=S.tareas.some(t=>t.dias.includes(dia));
+    const ay=new Date();ay.setDate(ay.getDate()-1);
+    const esAyer=key(ay)===S.ultimoDia;
+    if(habia&&pend.length===0&&esAyer){
+      S.racha++;if(S.racha>S.mejor)S.mejor=S.racha;
+      if(S.racha%7===0&&S.comodines<2){S.comodines++;toast('🛡 ¡Ganaste un comodín por tu racha!')}
+    }
     else if(habia&&pend.length>0){
       if(S.hard){S.xp=Math.max(0,S.xp-pend.length*10);S.racha=0;toast('Modo difícil: perdiste XP y tu racha')}
-      else if(!esAyer||pend.length>0){S.racha=0}
+      else if(esAyer&&S.comodines>0){S.comodines--;toast('🛡 Un comodín salvó tu racha de ayer')}
+      else{S.racha=0}
     }else if(!esAyer){S.racha=0}
   }
   S.ultimoDia=hk;guardar();
 }
+
+// resumen de 7 días
+function resumenSemana(){
+  const out=[];let prog=0,hechas=0;
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);const k=key(d);
+    const pr=S.tareas.filter(t=>t.dias.includes(d.getDay()));
+    const h=(S.hechas[k]||[]).filter(id=>pr.some(t=>t.id===id)).length;
+    out.push({d:DIAS[d.getDay()],p:pr.length,h:h});prog+=pr.length;hechas+=h;
+  }
+  return{out:out,prog:prog,hechas:hechas};
+}
+
 function pintar(){
   document.getElementById('frase').innerHTML='<small>MENSAJE DEL DÍA</small>'+S.frase;
   const nv=calcNivel();
   document.getElementById('nivel').textContent='Nivel '+nv.n;
   document.getElementById('barraxp').style.width=(nv.r/nv.max*100)+'%';
   document.getElementById('xptxt').textContent=nv.r+' / '+nv.max+' XP';
-  document.getElementById('racha').textContent='🔥 '+S.racha;
+  document.getElementById('racha').textContent='🔥 '+S.racha+'  🛡 '+S.comodines;
   document.getElementById('racha2').textContent='🔥 Racha actual: '+S.racha+' días';
   document.getElementById('mejor').textContent='Mejor racha: '+S.mejor+' días';
   document.getElementById('totales').textContent='Tareas completadas en total: '+S.total+' · XP total: '+S.xp;
+  document.getElementById('comod').textContent='🛡 Comodines: '+S.comodines+'. Si un día se te pasa una tarea, un comodín salva tu racha. Ganas uno cada 7 días de racha (máximo 2). El modo difícil no los usa.';
   document.getElementById('hard').checked=S.hard;
+  document.getElementById('fx').checked=S.fx;
+
+  // reto semanal
+  const r=retoActual();const v=Math.min(S.semana[r.t],r.m);
+  document.getElementById('retotxt').textContent=r.n+' ('+v+'/'+r.m+')';
+  document.getElementById('retobarra').style.width=(v/r.m*100)+'%';
+  document.getElementById('retoxp').textContent=S.semana.hecho?'✅ Cumplido':'+'+r.xp+' XP';
+
+  // tareas de hoy
   const hk=hoyKey();const hechas=S.hechas[hk]||[];
   const th=tareasDeHoy().sort((a,b)=>(a.hora??99)-(b.hora??99));
   const l=document.getElementById('lista');l.innerHTML='';
-  if(th.length===0)l.innerHTML='<div class="mini">No tienes tareas para hoy. Añade una en Nueva.</div>';
+  if(th.length===0){
+    if(S.tareas.length===0){
+      l.innerHTML='<div class="mini">¡Bienvenido! Empieza con una tarea rápida (se repite todos los días) o crea la tuya en ➕ Nueva:</div><div class="chips">'+RAPIDAS.map((x,i)=>'<button class="chip" onclick="rapida('+i+')">'+x+'</button>').join('')+'</div>';
+    }else{
+      l.innerHTML='<div class="mini">No tienes tareas para hoy. Añade una en ➕ Nueva.</div>';
+    }
+  }
   th.forEach(t=>{
     const h=hechas.includes(t.id);
-    const d=document.createElement('div');d.className='tarea'+(h?' hecha':'');
-    d.innerHTML='<input type="checkbox" '+(h?'checked':'')+' onchange="marcar('+t.id+')"><div class="t">'+(t.hora!=null?String(t.hora).padStart(2,'0')+':00 · ':'')+esc(t.nombre)+'</div><div class="xpbadge">+'+t.xp+' XP</div><button class="del" onclick="borrar('+t.id+')">✕</button>';
-  l.appendChild(d)});
+    const d=document.createElement('div');d.className='tarea'+(h?' hecha':'')+(h&&ultima===t.id?' pop':'');
+    d.innerHTML='<input type="checkbox" '+(h?'checked':'')+' tabindex="-1"><div class="t">'+(t.hora!=null?String(t.hora).padStart(2,'0')+':00 · ':'')+esc(t.nombre)+'</div><div class="xpbadge">+'+t.xp+' XP</div><button class="del" aria-label="Borrar" onclick="event.stopPropagation();borrar('+t.id+')">✕</button>';
+    d.onclick=ev=>marcar(t.id,ev);
+    l.appendChild(d);
+  });
+  ultima=null;
   const hechasHoy=th.filter(t=>hechas.includes(t.id)).length;
   const pct=th.length?hechasHoy/th.length*100:0;
   document.getElementById('barradia').style.width=pct+'%';
-  document.getElementById('diatxt').textContent=hechasHoy+' de '+th.length+' tareas hechas';
-  // semana
+  document.getElementById('diatxt').textContent=hechasHoy+' de '+th.length+' tareas hechas'+(th.length&&hechasHoy===th.length?' · ¡Día completo! 🔥':'');
+
+  // resumen
+  const R=resumenSemana();const pc=R.prog?Math.round(R.hechas/R.prog*100):0;
+  let msg='Cada tarea cuenta, esta semana puedes ir a más 🚀';
+  if(pc>=80)msg='¡Semana brutal! 🔥';else if(pc>=50)msg='Vas bien, un empujón más 💪';
+  document.getElementById('resumen').innerHTML=R.prog
+    ?'<div class="res">'+R.out.map(o=>'<div class="col"><div class="b"><i style="height:'+(o.p?Math.round(o.h/o.p*100):0)+'%"></i></div>'+o.d+'</div>').join('')+'</div><div class="mini" style="margin-top:10px">Cumpliste el <b>'+pc+'%</b> ('+R.hechas+' de '+R.prog+' tareas). '+msg+'</div>'
+    :'<div class="mini">Añade tareas y aquí verás cómo vas cada semana.</div>';
+
+  // insignias
+  document.getElementById('ins').innerHTML=INS.map(i=>'<div class="'+(S.insignias.includes(i.id)?'on':'')+'"><span>'+i.e+'</span>'+i.n+'</div>').join('');
+
+  // horario semanal
   const s=document.getElementById('sem');s.innerHTML='<div class="h"></div>';
   [1,2,3,4,5,6,0].forEach(d=>{s.innerHTML+='<div class="h">'+DIAS[d]+'</div>'});
   for(let h=0;h<24;h++){
@@ -200,31 +407,65 @@ function pintar(){
     });
   }
 }
-function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function marcar(id){
+
+let ultima=null;
+function marcar(id,ev){
+  revisarSemana();
   const hk=hoyKey();S.hechas[hk]=S.hechas[hk]||[];
-  const t=S.tareas.find(x=>x.id===id);
+  const t=S.tareas.find(x=>x.id===id);if(!t)return;
   const i=S.hechas[hk].indexOf(id);
   const antes=calcNivel().n;
-  if(i>=0){S.hechas[hk].splice(i,1);S.xp=Math.max(0,S.xp-t.xp);S.total=Math.max(0,S.total-1)}
-  else{S.hechas[hk].push(id);S.xp+=t.xp;S.total++;toast('+'+t.xp+' XP')}
-  const despues=calcNivel().n;
-  if(despues>antes)toast('🎉 ¡Subiste al nivel '+despues+'!');
-  const th=tareasDeHoy();
-  if(th.length&&th.every(x=>S.hechas[hk].includes(x.id))){S.xp+=25;toast('Día completo: +25 XP extra')}
-  guardar();pintar();
+  if(i>=0){
+    S.hechas[hk].splice(i,1);ganar(-t.xp);S.total=Math.max(0,S.total-1);
+  }else{
+    S.hechas[hk].push(id);ganar(t.xp);S.total++;ultima=id;
+    toast('+'+t.xp+' XP');sonido(660,880);vibrar();
+    if(ev&&ev.clientX!==undefined)flotar('+'+t.xp+' XP',ev.clientX,ev.clientY);
+    const th=tareasDeHoy();
+    if(th.every(x=>S.hechas[hk].includes(x.id))&&!S.bonus[hk]){
+      S.bonus[hk]=true;S.semana.dias++;ganar(25);
+      toast('🌟 Día completo: +25 XP extra');confeti();sonido(784,1175);
+    }
+  }
+  post(antes);
 }
 function borrar(id){if(confirm('¿Borrar esta tarea?')){S.tareas=S.tareas.filter(t=>t.id!==id);guardar();pintar()}}
+function diasSel(a){document.querySelectorAll('#dias input').forEach(x=>{x.checked=a.includes(+x.value)})}
 function añadir(){
   const n=document.getElementById('nt').value.trim();if(!n){toast('Escribe un nombre');return}
   const dias=[...document.querySelectorAll('#dias input:checked')].map(x=>+x.value);
   if(!dias.length){toast('Elige al menos un día');return}
   const hv=document.getElementById('hora').value;
   S.tareas.push({id:Date.now(),nombre:n,dias:dias,hora:hv===''?null:+hv,xp:+document.getElementById('dif').value});
-  document.getElementById('nt').value='';guardar();toast('Tarea añadida');pintar();
+  document.getElementById('nt').value='';guardar();toast('Tarea añadida');irA('hoy');
+}
+function rapida(i){
+  S.tareas.push({id:Date.now(),nombre:RAPIDAS[i],dias:[0,1,2,3,4,5,6],hora:null,xp:20});
+  guardar();toast('Tarea añadida');pintar();
 }
 function cambiarHard(){S.hard=document.getElementById('hard').checked;guardar();toast(S.hard?'Modo difícil activado':'Modo difícil desactivado')}
+function cambiarFx(){S.fx=document.getElementById('fx').checked;guardar();toast(S.fx?'Efectos activados':'Efectos desactivados')}
 function nuevaCarta(){document.getElementById('carta').textContent=CARTAS[Math.floor(Math.random()*CARTAS.length)]}
+
+// respaldo
+function copiarResp(){
+  const t=JSON.stringify(S);const ta=document.getElementById('resp');ta.value=t;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>toast('Respaldo copiado ✅'),()=>{ta.select();toast('Mantén pulsado el texto y copia')});
+  }else{ta.select();toast('Mantén pulsado el texto y copia')}
+}
+function restaurar(){
+  const ta=document.getElementById('resp');
+  try{
+    const o=JSON.parse(ta.value);
+    if(!o||!Array.isArray(o.tareas))throw 0;
+    if(!confirm('¿Reemplazar tus datos actuales con este respaldo?'))return;
+    S=Object.assign(def(),o);S.frase=FRASES[Math.floor(Math.random()*FRASES.length)];
+    revisarSemana();revisarInsignias(true);guardar();toast('Datos restaurados');pintar();
+  }catch(e){toast('Ese texto no es un respaldo válido')}
+}
+
+// foco
 let foco=null,seg=1500;
 function focoIniciar(){
   const b=document.getElementById('bfoco');
@@ -232,16 +473,21 @@ function focoIniciar(){
   b.textContent='Cancelar';
   foco=setInterval(()=>{
     seg--;document.getElementById('reloj').textContent=String(Math.floor(seg/60)).padStart(2,'0')+':'+String(seg%60).padStart(2,'0');
-    if(seg<=0){clearInterval(foco);foco=null;seg=1500;b.textContent='Empezar';S.xp+=15;guardar();toast('Foco completado: +15 XP');pintar()}
+    if(seg<=0){
+      clearInterval(foco);foco=null;seg=1500;b.textContent='Empezar';document.getElementById('reloj').textContent='25:00';
+      revisarSemana();const a=calcNivel().n;ganar(15);S.focos++;S.semana.focos++;
+      toast('⏱ Foco completado: +15 XP');sonido(660,988);post(a);
+    }
   },1000);
 }
+
 // iniciar
 const dc=document.getElementById('dias');
 [1,2,3,4,5,6,0].forEach(d=>{dc.innerHTML+='<label><input type="checkbox" value="'+d+'"><span>'+DIAS[d]+'</span></label>'});
 const hs=document.getElementById('hora');hs.innerHTML='<option value="">Sin hora</option>';
 for(let h=0;h<24;h++)hs.innerHTML+='<option value="'+h+'">'+String(h).padStart(2,'0')+':00</option>';
 S.frase=FRASES[Math.floor(Math.random()*FRASES.length)];
-revisarDiaAnterior();nuevaCarta();pintar();
+revisarSemana();revisarDiaAnterior();revisarInsignias(true);guardar();nuevaCarta();pintar();
 </script>
 </body>
 </html>
